@@ -8,12 +8,13 @@ import {
   Pressable,
   TouchableOpacity,
   Dimensions,
-  Alert
+  Alert,
+  Keyboard
 } from 'react-native'
 import { Formik } from "formik"
 import * as Yup from "yup"
 import Validator from "email-validator"
-import firebase from "firebase"
+import firebase from "./config"
 
 const windiwWidth = Dimensions.get('window').width
 
@@ -30,6 +31,8 @@ const LoginScreen = ({ navigation }) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)
       console.log(email, password)
+      Keyboard.dismiss()
+      navigation.navigate('HomeScreen')
     } catch (error) {
       Alert.alert(
         'Having An Error',
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 0.5,
     justifyContent: 'center',
-    // top: 120,
+    top: 120,
     // marginTop: 80,
   },
   inputfield: {

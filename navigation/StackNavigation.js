@@ -15,18 +15,18 @@ import FoxNews from '../NewsScreen/Source/FoxNews';
 import GoogleNews from '../NewsScreen/Source/GoogleNews';
 import LoginScreen from '../firebase/LoginScreen';
 import SignupScreen from '../firebase/SignUp';
+import CheckUser from '../CheckUser';
 
 const Stack = createStackNavigator();
 
 const StackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="LoginScreen"
       screenOptions={({ route }) => ({
         headerShown: false
       })}
     >
-       <Stack.Screen name="Home_" component={TopTabNavigation} />
+       <Stack.Screen name="HomeScreen" component={TopTabNavigation} />
        <Stack.Screen name="General" component={NewsScreen} />
        <Stack.Screen name="Business" component={BusinessScreen} />
        <Stack.Screen name="Entertainment" component={EntertainmentScreen} />
@@ -40,6 +40,7 @@ const StackNavigation = () => {
        <Stack.Screen name="GoogleNews" component={GoogleNews} />
        <Stack.Screen name="LogInScreen" component={LoginScreen} />
        <Stack.Screen name="SignUpScreen" component={SignupScreen} />
+       <Stack.Screen name="CheckIfUser" component={CheckUser} />
 
     </Stack.Navigator>
   );

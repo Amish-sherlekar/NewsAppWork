@@ -11,7 +11,7 @@ import {
 import { Formik } from "formik"
 import * as Yup from "yup"
 import Validator from "email-validator"
-import firebase from "firebase"
+import firebase from "./config"
 
 const SignupScreen = ({navigation}) => {
 
@@ -26,25 +26,7 @@ const SignupScreen = ({navigation}) => {
   const onSignup = async (email, password, userName) => {
     try {
 
-      await firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-        console.log('User account created & signed in!');
-      })
-        .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            Alert.alert(
-              'This email is already in use or you have this account already you can logIn',
-              error.message,
-              [{ text: 'Ok', onPress: () => console.log('Ok'), style: 'cancel' }, { text: 'SIGN UP', onPress: () => navigation.push('LogInScreen') }]
-            )
-          }
-          if (error.code === 'auth/invalid-email') {
-            Alert.alert(
-              'Type a correct password',
-              error.message,
-              [{ text: 'Ok', onPress: () => console.log('Ok'), style: 'cancel' }]
-            )
-          }
-        });
+      await firebase.auth().createUserWithEmailAndPassword(email, password)
       console.log(email, password)
     } catch (error) {
       Alert.alert(error.message)
@@ -140,13 +122,15 @@ const SignupScreen = ({navigation}) => {
               onPress={handleSubmit}
               disabled={!isValid}
             >
-              <Text style={styles.buttonText}>Log In</Text>
+              <Text style={styles.buttonText}>Sign up</Text>
             </Pressable>
 
             <View style={styles.signupContainer}>
               <Text>Already have an account</Text>
-              <TouchableOpacity>
-                <Text style={{ color: '#6bb0f5' }}> Sign Up</Text>
+              <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              >
+                <Text style={{ color: '#6bb0f5' }}>Log In</Text>
               </TouchableOpacity>
             </View>
           </>

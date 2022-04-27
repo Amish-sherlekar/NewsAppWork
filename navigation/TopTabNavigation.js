@@ -8,8 +8,6 @@ import { RFValue } from "react-native-responsive-fontsize";
 import tw from "twrnc"
 import LoginScreen from "../firebase/LoginScreen";
 
-const INDICATOR_SIZE = 61;
-
 const Tab = createMaterialTopTabNavigator()
 
 export default class TopTabNavigation extends Component {
@@ -19,8 +17,9 @@ export default class TopTabNavigation extends Component {
                 initialRouteName="LogIn"
                 screenOptions={({ route }) => ({
                     tabBarIconStyle: {
-                        width: 40,
+                        width: 50,
                         height: 40,
+                        borderRadius: 10,
                     },
                     tabBarStyle: {
                         paddingTop: StatusBar.currentHeight + 15,

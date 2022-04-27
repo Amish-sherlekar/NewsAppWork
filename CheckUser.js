@@ -1,34 +1,38 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import firebase from "firebase";
 
-export default class CheckUser extends Component {
+export default function CheckUser({ props }) {
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
-  componentDidMount() {
-    this.checkIfLoggedIn();
-  }
+  // componentDidMount() {
+  //   this.checkIfLoggedIn();
+  // }
 
-  checkIfLoggedIn = () => {
+  useEffect(() => {
+    return () => {
+      checkIfLoggedIn();
+    }
+  }, [])
+
+  const checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.props.navigation.navigate("DashboardScreen");
-      } else {
-        this.props.navigation.navigate("LoginScreen");
+        console.log(user)
       }
     });
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
+  // render() {
+  return (
+    <View style={styles.container}>
+      <Text>Please Wait</Text>
+    </View>
+  );
+  // }
 }
 
 const styles = StyleSheet.create({
