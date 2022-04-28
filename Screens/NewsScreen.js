@@ -58,15 +58,13 @@ export default class NewsScreen extends Component{
   render() {
   if (this.state.article === '') {
     return (
-      <NativeBaseProvider theme={theme}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Loading....</Text>
         </View>
-      </NativeBaseProvider>
     );
   } else {
     return (
-      <NativeBaseProvider theme={theme}>
+      <NativeBaseProvider >
           <Center
             bg={'darkBlue.700'}    
           >

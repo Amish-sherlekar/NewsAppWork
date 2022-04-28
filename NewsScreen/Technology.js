@@ -39,7 +39,7 @@ export default class TechnologyScreen extends Component {
       );
     } else {
       return (
-        <NativeBaseProvider theme={theme}>
+        <NativeBaseProvider >
           <Modal
             visible={true}
             animationType="slide"

@@ -41,7 +41,7 @@ export default class ScienceScreen extends Component {
       );
     } else {
       return (
-        <NativeBaseProvider theme={theme}>
+        <NativeBaseProvider >
           <Modal
             visible={true}
             animationType="slide"

@@ -1,11 +1,7 @@
 import AppLoading from "expo-app-loading";
-import React, { Component } from 'react'
-import { Image, View } from "react-native"
-import { DrawerNavigation } from './navigation/DrawerNavigation'
+import React, { Component } from "react";
+import { DrawerNavigation } from "./navigation/DrawerNavigation";
 import * as Font from "expo-font";
-import LoginScreen from "./firebase/LoginScreen";
-import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import {CheckUser} from "./CheckUser";
 
 export default function App() {
   const [fontsLoaded] = Font.useFonts({
@@ -20,8 +16,5 @@ export default function App() {
     return <AppLoading />;
   }
 
-  return (
-    // <CheckUser />
-    <DrawerNavigation />
-  );
+  return <DrawerNavigation />;
 }
