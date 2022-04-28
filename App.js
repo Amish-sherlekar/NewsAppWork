@@ -1,5 +1,5 @@
 import AppLoading from "expo-app-loading";
-import React, { Component } from "react";
+import React from "react";
 import { DrawerNavigation } from "./navigation/DrawerNavigation";
 import * as Font from "expo-font";
 
