@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import NewsScreen from '../Screens/NewsScreen';
-import ExploreScreen from '../Screens/ExploreScreen';
 import BusinessScreen from '../NewsScreen/Business';
 import EntertainmentScreen from '../NewsScreen/Entertainment';
 import HealthScreen from '../NewsScreen/Health';
@@ -15,7 +14,6 @@ import FoxNews from '../NewsScreen/Source/FoxNews';
 import GoogleNews from '../NewsScreen/Source/GoogleNews';
 import LoginScreen from '../firebase/LoginScreen';
 import SignupScreen from '../firebase/SignUp';
-import {CheckUser} from '../CheckUser';
 
 const Stack = createStackNavigator();
 
@@ -23,10 +21,7 @@ const StackNavigation = () => {
   return (
     <Stack.Navigator
       initialRouteName='HomeScreen'
-      screenOptions={({ route }) => ({
-        headerShown: false
-      })}
-      >
+      screenOptions={({ route }) => ({ headerShown: false })}>
       <Stack.Screen name="HomeScreen" component={TopTabNavigation} />
       <Stack.Screen name="NewsScreen" component={NewsScreen} />
       <Stack.Screen name="General" component={NewsScreen} />
@@ -42,7 +37,6 @@ const StackNavigation = () => {
       <Stack.Screen name="GoogleNews" component={GoogleNews} />
       <Stack.Screen name="LogInScreen" component={LoginScreen} />
       <Stack.Screen name="SignUpScreen" component={SignupScreen} />
-
     </Stack.Navigator>
   );
 }

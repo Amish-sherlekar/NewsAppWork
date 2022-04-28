@@ -2,14 +2,10 @@ import React from 'react';
 import {Dimensions} from "react-native"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import ExploreScreen from '../Screens/ExploreScreen';
 import SavedNews from '../Screens/SavedNews';
 import { Ionicons } from '@expo/vector-icons';
-import TopTabNavigation from './TopTabNavigation';
 import StackNavigation from './StackNavigation';
 import CustomDrawer from './CustomDrawer';
-import LoginScreen from '../firebase/LoginScreen';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -23,7 +19,7 @@ export const DrawerNavigation = () => {
                 screenOptions={{
                     headerShown: false,
                     drawerActiveBackgroundColor: '#ad0194',
-                    drawerActiveTintColor: '#fff', // active tint color
+                    drawerActiveTintColor: '#fff',
                     drawerInactiveTintColor: '#808080',
                     drawerLabelStyle: {
                         marginLeft: -25,

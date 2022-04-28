@@ -4,10 +4,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { Ionicons } from "@expo/vector-icons";
 import ExploreScreen from "../Screens/ExploreScreen";
 import NewsScreen from "../Screens/NewsScreen";
-import { RFValue } from "react-native-responsive-fontsize";
-import tw from "twrnc"
-import LoginScreen from "../firebase/LoginScreen";
-
 const Tab = createMaterialTopTabNavigator()
 
 export default class TopTabNavigation extends Component {

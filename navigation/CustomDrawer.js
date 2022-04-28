@@ -18,8 +18,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import tw from "twrnc"
-import ThemeToggle from '../theme-toggle';
+import tailwind from "tailwind-rn"
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -39,17 +38,24 @@ const CustomDrawer = props => {
           contentContainerStyle={{ height: windowHeight - 10 }}
         >
           <ImageBackground source={require('../assets/images/bg2.jpg')} style={{ width: windowWidth - 10, height: 400, bottom: 10 }}>
-            <Feather name='chevron-left' size={30} onPress={() => { goBack() }} color='#fff' style={[styles.backIcon, tw`bg-indigo-400`]} />
+            <Feather
+              name='chevron-left'
+              size={30}
+              onPress={() => { goBack() }}
+              color='#fff'
+              style={
+                [
+                  styles.backIcon,
+                  tailwind('bg-indigo-400')
+                ]} />
           </ImageBackground>
-
-
           <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: -80 }}>
             <DrawerItemList {...props} />
           </View>
         </DrawerContentScrollView>
-        <TouchableOpacity 
-        style={styles.signUpSyle}
-        onPress={() => props.navigation.navigate('LogInScreen')}
+        <TouchableOpacity
+          style={styles.signUpSyle}
+          onPress={() => props.navigation.navigate('LogInScreen')}
         >
           <Ionicons name='exit' size={45} color={'#808080'} />
           <Text style={{
