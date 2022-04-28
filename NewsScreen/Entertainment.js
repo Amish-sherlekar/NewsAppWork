@@ -51,7 +51,6 @@ export default class EntertainmentScreen extends Component {
             _dark={{ bg: 'blue.400' }}
             _light={{ bg: 'lightBlue.800' }}
           >
-
             <TouchableOpacity onPress={() => {
               this.props.navigation.navigate('HomeScreen')
             }}

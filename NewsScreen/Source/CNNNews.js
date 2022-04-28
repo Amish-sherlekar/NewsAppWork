@@ -49,7 +49,6 @@ export default class CNNNews extends Component {
             _dark={{ bg: 'blue.400' }}
             _light={{ bg: 'lightBlue.800' }}
           >
-
           <TouchableOpacity onPress={()=>{
             this.props.navigation.navigate('Home_')
           }}>
