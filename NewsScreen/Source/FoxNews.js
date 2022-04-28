@@ -73,15 +73,6 @@ export default class FoxNews extends Component {
                       <Text style={tw`font-semibold text-sm text-center text-blue-900 px-5`}>{item.description.slice(0, 200) + "..."}</Text>
                     </Pressable>
                   </Box>
-              // <View style={{ flex: 1, flexDirection: 'column', margin: 10, padding: 10, backgroundColor: '#d3d3', borderRadius: 30 }}>
-              //   <TouchableOpacity
-              //     onPress={() => Linking.openURL(item.url)}
-              //   >
-              //     <Image source={{ uri: item.urlToImage }} style={{ width: 350, height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }} />
-              //     <Text style={{ fontSize: 20, color: 'white' }}>{item.title}</Text>
-              //     <Text style={{ fontSize: 15, color: 'white' }}>{item.description}</Text>
-              //   </TouchableOpacity>
-              // </View>
             )}
           />
             </Center>

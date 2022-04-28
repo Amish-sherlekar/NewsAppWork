@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList, Image, TouchableOpacity, Linking, Modal } from 'react-native';
 import { Ionicons } from "@expo/vector-icons"
-import tw from "twrnc"
+import tailwind from "tailwind-rn"
 import { Box, Center, NativeBaseProvider, Pressable } from 'native-base';
 import theme from '../../theme';
 
@@ -69,19 +69,10 @@ export default class GoogleNews extends Component {
                       onPress={() => Linking.openURL(item.url)}
                     >
                       <Image source={{ uri: item.urlToImage }} style={{ width: '100%', height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }} />
-                      <Text style={tw`text-base text-center font-bold`}>{item.title.slice(0, 75) + "..."}</Text>
-                      <Text style={tw`font-semibold text-sm text-center text-blue-900 px-5`}>{item.description.slice(0, 200) + "..."}</Text>
+                      <Text style={tailwind('text-base text-center font-bold')}>{item.title.slice(0, 75) + "..."}</Text>
+                      <Text style={tailwind('font-semibold text-sm text-center text-blue-900 px-5')}>{item.description.slice(0, 200) + "..."}</Text>
                     </Pressable>
                   </Box>
-                  // <View style={{ flex: 1, flexDirection: 'column', margin: 10, padding: 10, backgroundColor: '#d3d3', borderRadius: 30 }}>
-                  //   <TouchableOpacity
-                  //     onPress={() => Linking.openURL(item.url)}
-                  //   >
-                  //     <Image source={{ uri: item.urlToImage }} style={{ width: 350, height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }} />
-                  //     <Text style={{ fontSize: 20, color: 'white' }}>{item.title}</Text>
-                  //     <Text style={{ fontSize: 15, color: 'white' }}>{item.description}</Text>
-                  //   </TouchableOpacity>
-                  // </View>
                 )}
               />
             </Center>
