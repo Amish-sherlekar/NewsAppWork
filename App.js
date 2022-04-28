@@ -5,7 +5,7 @@ import { DrawerNavigation } from './navigation/DrawerNavigation'
 import * as Font from "expo-font";
 import LoginScreen from "./firebase/LoginScreen";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import CheckUser from "./CheckUser";
+import {CheckUser} from "./CheckUser";
 
 export default function App() {
   const [fontsLoaded] = Font.useFonts({
@@ -21,6 +21,7 @@ export default function App() {
   }
 
   return (
-    <CheckUser />
+    // <CheckUser />
+    <DrawerNavigation />
   );
 }

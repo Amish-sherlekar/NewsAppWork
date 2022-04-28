@@ -40,6 +40,7 @@ const SignupScreen = ({navigation}) => {
         initialValues={{ email: "", username: "", password: "" }}
         onSubmit={values => {
          onSignup(values.email, values.password)
+         navigation.navigate('HomeScreen')
         }}
         validationSchema={SignupSchema}
         validateOnMount={true}
@@ -52,9 +53,9 @@ const SignupScreen = ({navigation}) => {
               styles.inputfield,
               {
                 borderColor:
-                  1 > values.email.length || values.password.length >= 6
-                    ? "#ccc"
-                    : "red"
+                values.email.length < 1 || Validator.validate(values.email)
+                ? '#ccc'
+                : 'red'
               }
             ]}>
               <TextInput
@@ -126,7 +127,7 @@ const SignupScreen = ({navigation}) => {
             </Pressable>
 
             <View style={styles.signupContainer}>
-              <Text>Already have an account</Text>
+              <Text>Already have an account  </Text>
               <TouchableOpacity
               onPress={() => navigation.goBack()}
               >

@@ -47,6 +47,20 @@ const CustomDrawer = props => {
             <DrawerItemList {...props} />
           </View>
         </DrawerContentScrollView>
+        <TouchableOpacity 
+        style={styles.signUpSyle}
+        onPress={() => props.navigation.navigate('LogInScreen')}
+        >
+          <Ionicons name='exit' size={45} color={'#808080'} />
+          <Text style={{
+            fontSize: 20,
+            fontFamily: 'Fira Code iScript',
+            color: '#808080',
+            marginLeft: 10,
+            marginTop: 10,
+          }}>SignUp</Text>
+        </TouchableOpacity>
+
       </View>
     </NativeBaseProvider>
   );
@@ -62,4 +76,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 5,
   },
+  signUpSyle: {
+    position: 'absolute',
+    bottom: 0,
+    left: 20,
+    height: 60,
+    flexDirection: 'row'
+  }
 })

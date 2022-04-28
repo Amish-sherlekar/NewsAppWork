@@ -1,44 +1,36 @@
-import React, { Component, useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import firebase from "firebase";
 
-export default function CheckUser({ props }) {
+// import React, { useState, useEffect } from 'react';
+// import { View, Text } from 'react-native';
+// import firebase from "firebase"
 
-  // constructor(props) {
-  //   super(props);
-  // }
+// const auth = firebase.auth
 
-  // componentDidMount() {
-  //   this.checkIfLoggedIn();
-  // }
+// export const CheckUser = ({ props }) => {
+//   // Set an initializing state whilst Firebase connects
+//   const [initializing, setInitializing] = useState(true);
+//   const [user, setUser] = useState();
 
-  useEffect(() => {
-    return () => {
-      checkIfLoggedIn();
-    }
-  }, [])
+//   // Handle user state changes
+//   function onAuthStateChanged(user) {
+//     setUser(user);
+//     if (initializing) setInitializing(false);
+//   }
 
-  const checkIfLoggedIn = () => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log(user)
-      }
-    });
-  };
+//   useEffect(() => {
+//     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+//     return subscriber; // unsubscribe on unmount
+//   }, []);
 
-  // render() {
-  return (
-    <View style={styles.container}>
-      <Text>Please Wait</Text>
-    </View>
-  );
-  // }
-}
+//   if (initializing) return null;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  }
-});
+//   if (!user) {
+//     return (
+//       <View>
+//         <Text>Login</Text>
+//       </View>
+//     );
+//   }else{
+//       props.navigation.navigate('HomeScreen')
+//   }
+
+// }

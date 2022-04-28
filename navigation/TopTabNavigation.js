@@ -47,7 +47,6 @@ export default class TopTabNavigation extends Component {
                     },
                 })}
             >
-                <Tab.Screen name="Login" component={LoginScreen} />
                 <Tab.Screen name="Home" component={ExploreScreen} />
                 <Tab.Screen name="All News" component={NewsScreen} />
             </Tab.Navigator>

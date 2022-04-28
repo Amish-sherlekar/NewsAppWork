@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList, Image, TouchableOpacity, Linking, StyleSheet, Modal } from 'react-native';
 import { Ionicons, Feather } from "@expo/vector-icons"
-import tw from "twrnc"
+import tailwind from "tailwind-rn"
 import { Box, Center, NativeBaseProvider, Pressable } from 'native-base';
 import theme from '../theme';
 
@@ -42,28 +42,28 @@ export default class ScienceScreen extends Component {
     } else {
       return (
         <NativeBaseProvider theme={theme}>
-        <Modal
-          visible={true}
-          animationType="slide"
-        >
-          <Center
-            _dark={{ bg: 'blue.400' }}
-            _light={{ bg: 'lightBlue.800' }}
+          <Modal
+            visible={true}
+            animationType="slide"
           >
+            <Center
+              _dark={{ bg: 'blue.400' }}
+              _light={{ bg: 'lightBlue.800' }}
+            >
 
-          <TouchableOpacity onPress={() => {
-            this.props.navigation.navigate('Home_')
-          }}
-            style={[tw`bg-blue-300`, styles.backIcon]}
-          >
-            <Feather name='chevron-left' size={30} />
-          </TouchableOpacity>
-          <FlatList
-            key={this.state.article.articles.title}
-            keyExtractor={(item, index) => index.toString()}
-            data={this.state.article.articles}
-            renderItem={({ item }) => (
-              <Box
+              <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('HomeScreen')
+              }}
+                style={[tailwind('bg-blue-300'), styles.backIcon]}
+              >
+                <Feather name='chevron-left' size={30} />
+              </TouchableOpacity>
+              <FlatList
+                key={this.state.article.articles.title}
+                keyExtractor={(item, index) => index.toString()}
+                data={this.state.article.articles}
+                renderItem={({ item }) => (
+                  <Box
                     style={styles.newsContainer}
                     _dark={{ bg: 'blue-600' }}
                     _light={{ bg: 'lightBlue.700' }}
@@ -73,12 +73,12 @@ export default class ScienceScreen extends Component {
                       onPress={() => Linking.openURL(item.url)}
                     >
                       <Image source={{ uri: item.urlToImage }} style={{ width: '100%', height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }} />
-                      <Text style={tw`text-base text-center font-bold`}>{item.title.slice(0, 75) + "..."}</Text>
-                      <Text style={tw`font-semibold text-sm text-center text-blue-900 px-5`}>{item.description.slice(0, 200) + "..."}</Text>
+                      <Text style={tailwind('text-base text-center font-bold')}>{item.title.slice(0, 75) + "..."}</Text>
+                      <Text style={tailwind('font-semibold text-sm text-center text-blue-900 px-5')}>{item.description.slice(0, 200) + "..."}</Text>
                     </Pressable>
                   </Box>
-            )}
-          />
+                )}
+              />
             </Center>
           </Modal>
         </NativeBaseProvider>
@@ -88,7 +88,7 @@ export default class ScienceScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  newContainer: {
+  newsContainer: {
     flex: 1,
     flexDirection: 'column',
     margin: 10,

@@ -19,7 +19,8 @@ import {
   Center
 } from "native-base"
 import { Ionicons, Feather } from "@expo/vector-icons"
-import tw from "twrnc"
+import tailwind from "tailwind-rn";
+// import tailwind from "tailwindrnc"
 import ThemeToggle from '../theme-toggle';
 import theme from '../theme';
 
@@ -66,14 +67,13 @@ export default class NewsScreen extends Component{
   } else {
     return (
       <NativeBaseProvider theme={theme}>
-        {/* <Modal
-          visible={this.state.setModalVisible}
-          animationType="slide"
-        > */}
           <Center
             bg={'darkBlue.700'}    
           >
             <FlatList
+            style={{
+              marginVertical: 30,
+            }}
               key={this.state.article.articles.title}
               keyExtractor={(item, index) => index.toString()}
               data={this.state.article.articles}
@@ -87,11 +87,12 @@ export default class NewsScreen extends Component{
                     onPress={() => Linking.openURL(item.url)}
                   >
                     <Image source={{ uri: item.urlToImage }} style={{ width: 350, height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }} />
-                    <Text style={tw`text-base text-center font-bold`}>{item.title.slice(0, 65) + "..."}</Text>
-                    <Text style={tw`font-semibold text-sm text-center text-blue-600`}>{item.description.slice(0, 125) + "..."}</Text>
+                    <Text style={tailwind("text-base text-center font-black")}>{item.title.slice(0, 65) + "..."}</Text>
+                    <Text style={tailwind("font-semibold text-sm text-center text-blue-600")}>{item.description.slice(0, 125) + "..."}</Text>
                   </Pressable>
                 </Box>
               )}
+              showsVerticalScrollIndicator={false}
             />
           </Center>
         {/* </Modal> */}

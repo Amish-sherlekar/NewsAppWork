@@ -30,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
   const onLogin = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)
-      console.log(email, password)
+      console.log("email:", email, "password:", password)
       Keyboard.dismiss()
       navigation.navigate('HomeScreen')
     } catch (error) {
@@ -71,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
                   values.email.length < 1 || Validator.validate(values.email)
                     ? '#ccc'
                     : 'red'
-              }
+              }``
             ]}>
               <TextInput
                 placeholderTextColor={'#444'}
@@ -122,7 +122,9 @@ const LoginScreen = ({ navigation }) => {
 
             <View style={styles.signupContainer}>
               <Text>Don't have an account</Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+              onPress={() => navigation.push('SignUpScreen')}
+              >
                 <Text style={{ color: '#6bb0f5' }}> Sign Up</Text>
               </TouchableOpacity>
             </View>
