@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, Image, TouchableOpacity, Linking, Modal } from 'react-native';
-import {Ionicons} from "@expo/vector-icons"
+import { Text, View, FlatList, Image, TouchableOpacity, Linking, Modal, StyleSheet, Dimensions } from 'react-native';
+import { Ionicons } from "@expo/vector-icons"
 import tw from "twrnc"
 import { Box, Center, NativeBaseProvider, Pressable } from 'native-base';
-import theme from '../../theme';
+import Carousel from 'react-native-snap-carousel';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default class FoxNews extends Component {
   constructor() {
     super();
     this.state = {
       article: '',
+      index: 0,
     };
   }
 
@@ -32,49 +36,52 @@ export default class FoxNews extends Component {
   };
 
   render() {
-    if(this.state.article === ''){
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Loading....</Text>
-      </View>
-    );
-    }else{
-      return(
+    if (this.state.article === '') {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Loading....</Text>
+        </View>
+      );
+    } else {
+      return (
         <NativeBaseProvider >
-        <Modal
-          visible={true}
-          animationType="slide"
-        >
-          <Center
-            _dark={{ bg: 'blue.400' }}
-            _light={{ bg: 'lightBlue.800' }}
+          <Modal
+            visible={true}
+            animationType="slide"
           >
-          <TouchableOpacity onPress={()=>{
-            this.props.navigation.navigate('Home_')
-          }}>
-            <Ionicons name='arrow-back' size={30} />
-          </TouchableOpacity>
-          <FlatList
-            key={this.state.article.articles.title}
-            keyExtractor={(item, index) => index.toString()}
-            data={this.state.article.articles}
-            renderItem={({ item }) => (
-              <Box
+            <Center
+              _dark={{ bg: 'blue.400' }}
+              _light={{ bg: 'lightBlue.800' }}
+            >
+              <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('HomeScreen')
+              }}>
+                <Ionicons name='arrow-back' size={30} />
+              </TouchableOpacity>
+              <Carousel
+                layout='stack'
+                data={this.state.article.articles}
+                sliderHeight={windowHeight}
+                itemHeight={windowHeight}
+                vertical={true}
+                renderItem={({ item, index }) => (
+                  <Box
                     style={styles.newsContainer}
-                    _dark={{ bg: 'blue-600' }}
-                    _light={{ bg: 'lightBlue.700' }}
-                    shadow={7}
+                    bg={'darkBlue.700'}
+                    shadow={9}
                   >
                     <Pressable
                       onPress={() => Linking.openURL(item.url)}
                     >
-                      <Image source={{ uri: item.urlToImage }} style={{ width: '100%', height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }} />
-                      <Text style={tw`text-base text-center font-bold`}>{item.title.slice(0, 75) + "..."}</Text>
-                      <Text style={tw`font-semibold text-sm text-center text-blue-900 px-5`}>{item.description.slice(0, 200) + "..."}</Text>
+                      <Image source={{ uri: item.urlToImage }} style={styles.imageStyle} />
+                      <Text style={tailwind("text-base text-center font-black")}>{item.title}</Text>
+                      <Text style={tailwind("font-semibold text-sm text-center text-blue-600")}>{item.description}</Text>
                     </Pressable>
                   </Box>
-            )}
-          />
+                )}
+                onSnapToItem={(index) => this.setState({ index: index })}
+                loop={true}
+              />
             </Center>
           </Modal>
         </NativeBaseProvider>
@@ -82,5 +89,28 @@ export default class FoxNews extends Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  newsContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    margin: 10,
+    padding: 10,
+    borderRadius: 30,
+    top: 20,
+    height: 30
+  },
+  backIcon: {
+    borderRadius: 30,
+    width: 35,
+    top: 10,
+  },
+  imageStyle: {
+    width: 350,
+    height: 200,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30
+  }
+})
 
 // https://saurav.tech/NewsAPI/everything/cnn.json

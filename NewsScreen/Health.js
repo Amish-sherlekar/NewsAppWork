@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, Image, TouchableOpacity, Linking, StyleSheet, Modal } from 'react-native';
-import {Ionicons, Feather} from "@expo/vector-icons"
+import { Text, View, FlatList, Image, TouchableOpacity, Linking, StyleSheet, Modal, Dimensions } from 'react-native';
+import { Ionicons, Feather } from "@expo/vector-icons"
 import tailwind from "tailwind-rn"
 import { Box, Center, NativeBaseProvider, Pressable } from 'native-base';
-import theme from '../theme';
+import Carousel from 'react-native-snap-carousel';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default class HealthScreen extends Component {
   constructor() {
     super();
     this.state = {
       article: '',
+      index: 0,
     };
   }
 
@@ -57,27 +61,30 @@ export default class HealthScreen extends Component {
               >
                 <Feather name='chevron-left' size={30} />
               </TouchableOpacity>
-              <FlatList
-                key={this.state.article.articles.title}
-                keyExtractor={(item, index) => index.toString()}
-                data={this.state.article.articles}
-                renderItem={({ item }) => (
-                  <Box
-                    style={styles.newsContainer}
-                    _dark={{ bg: 'blue-600' }}
-                    _light={{ bg: 'lightBlue.700' }}
-                    shadow={7}
+              <Carousel
+              layout='stack'
+              data={this.state.article.articles}
+              sliderHeight={windowHeight}
+              itemHeight={windowHeight - 50}
+              vertical={true}
+              renderItem={({ item, index }) => (
+                <Box
+                  style={styles.newsContainer}
+                  bg={'darkBlue.700'}
+                  shadow={9}
+                >
+                  <Pressable
+                    onPress={() => Linking.openURL(item.url)}
                   >
-                    <Pressable
-                      onPress={() => Linking.openURL(item.url)}
-                    >
-                      <Image source={{ uri: item.urlToImage }} style={{ width: '100%', height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }} />
-                      <Text style={tailwind('text-base text-center font-bold')}>{item.title.slice(0, 75) + "..."}</Text>
-                      <Text style={tailwind('font-semibold text-sm text-center text-blue-900 px-5')}>{item.description.slice(0, 200) + "..."}</Text>
-                    </Pressable>
-                  </Box>
-                )}
-              />
+                    <Image source={{ uri: item.urlToImage }} style={styles.imageStyle} />
+                    <Text style={tailwind("text-base text-center font-black")}>{item.title}</Text>
+                    <Text style={tailwind("font-semibold text-sm text-center text-blue-600")}>{item.description}</Text>
+                  </Pressable>
+                </Box>
+              )}
+            onSnapToItem={(index) => this.setState({ index: index })}
+            loop={true}
+            />
             </Center>
           </Modal>
         </NativeBaseProvider>
@@ -88,17 +95,23 @@ export default class HealthScreen extends Component {
 
 const styles = StyleSheet.create({
   newsContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    margin: 10,
-    padding: 10,
-    borderRadius: 30,
-    top: 20
+      flex: 1,
+      flexDirection: 'column',
+      margin: 10,
+      padding: 10,
+      borderRadius: 30,
+      top: 20,
+      height: 30
   },
   backIcon: {
-    borderRadius: 30,
-    width: 35,
-    top: 10,
-    left: 10
+      borderRadius: 30,
+      width: 35,
+      top: 10,
+  },
+  imageStyle: {
+      width: 350,
+      height: 200,
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30
   }
 })
