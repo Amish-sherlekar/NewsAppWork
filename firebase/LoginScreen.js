@@ -14,7 +14,7 @@ import {
 import { Formik } from "formik"
 import * as Yup from "yup"
 import Validator from "email-validator"
-import firebase from "./config"
+import { firebase } from "./config"
 
 const windiwWidth = Dimensions.get('window').width
 
@@ -30,12 +30,12 @@ const LoginScreen = ({ navigation }) => {
   const onLogin = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)
-      console.log("email:", email, "password:", password)
+      console.log("email", email, "password", password)
       Keyboard.dismiss()
       navigation.navigate('HomeScreen')
     } catch (error) {
       Alert.alert(
-        'Having An Error',
+        'Please type your email and password or not created an account yet',
         error.message,
         [
           {
@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
           },
           {
             text: 'SIGN UP',
-            onPress: () => navigation.push('SignUpScreen')
+            onPress: () => navigation.navigate('SignUpScreen')
           }
         ]
       )
@@ -71,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
                   values.email.length < 1 || Validator.validate(values.email)
                     ? '#ccc'
                     : 'red'
-              }``
+              }
             ]}>
               <TextInput
                 placeholderTextColor={'#444'}
@@ -123,7 +123,7 @@ const LoginScreen = ({ navigation }) => {
             <View style={styles.signupContainer}>
               <Text>Don't have an account</Text>
               <TouchableOpacity
-              onPress={() => navigation.push('SignUpScreen')}
+                onPress={() => navigation.navigate('SignUpScreen')}
               >
                 <Text style={{ color: '#6bb0f5' }}> Sign Up</Text>
               </TouchableOpacity>

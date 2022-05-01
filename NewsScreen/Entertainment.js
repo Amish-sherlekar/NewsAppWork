@@ -1,25 +1,40 @@
-import React, { Component } from 'react'
-import { Text, View, FlatList, Image, TouchableOpacity, Linking, StyleSheet, Pressable, Modal, Dimensions } from 'react-native';
-import { Ionicons, Feather } from "@expo/vector-icons"
-import tailwind from "tailwind-rn"
-import { Box, Center, NativeBaseProvider } from 'native-base';
-import Carousel from 'react-native-snap-carousel';
+import React, { Component } from "react";
+import {
+  Text,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Linking,
+  StyleSheet,
+  Pressable,
+  Modal,
+  Dimensions,
+} from "react-native";
+import { Ionicons, Feather } from "@expo/vector-icons";
+import tailwind from "tailwind-rn";
+import { Box, Center, NativeBaseProvider } from "native-base";
+import Carousel from "react-native-snap-carousel";
+import { RFValue } from "react-native-responsive-fontsize";
+import LottieView from "lottie-react-native";
+import * as Speech from "expo-speech";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default class EntertainmentScreen extends Component {
   constructor() {
     super();
     this.state = {
-      article: '',
+      article: "",
       index: 0,
     };
   }
 
   getNews = async () => {
     //change latitude and longitude
-    var url = 'https://saurav.tech/NewsAPI/top-headlines/category/entertainment/in.json';
+    var url =
+      "https://newsapi.org/v2/top-headlines?country=in&category=entertainment&apiKey=a1cacd357bb146d2a946022b95be617b";
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -37,84 +52,126 @@ export default class EntertainmentScreen extends Component {
   };
 
   render() {
-    if (this.state.article === '') {
+    if (this.state.article === "") {
       return (
-
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Loading....</Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "flex-end",
+            backgroundColor: "#004282",
+          }}
+        >
+          <LottieView
+            source={require("../assets/animation/my-favourite-geometric-loader.json")}
+            autoPlay
+            loop
+          />
         </View>
       );
     } else {
       return (
         <NativeBaseProvider>
-          <Modal
-            visible={true}
-            animationType="slide"
-          >
-            <Center
-              _dark={{ bg: 'blue.400' }}
-              _light={{ bg: 'lightBlue.800' }}
-            >
-              <TouchableOpacity onPress={() => {
-                this.props.navigation.navigate('HomeScreen')
-              }}
-                style={[tailwind('bg-blue-300'), styles.backIcon]}
+          <Modal visible={true} animationType="slide">
+            <Center _light={{ bg: "lightBlue.700" }}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("HomeScreen");
+                }}
               >
-                <Feather name='chevron-left' size={30} />
+                <Ionicons name="arrow-back" size={30} />
               </TouchableOpacity>
-
               <Carousel
-              layout='stack'
-              data={this.state.article.articles}
-              sliderHeight={windowHeight}
-              itemHeight={windowHeight - 50}
-              vertical={true}
-              renderItem={({ item, index }) => (
-                <Box
-                  style={styles.newsContainer}
-                  bg={'darkBlue.700'}
-                  shadow={9}
-                >
-                  <Pressable
-                    onPress={() => Linking.openURL(item.url)}
+                layout="tinder"
+                data={this.state.article.articles}
+                sliderHeight={windowHeight}
+                itemHeight={windowHeight}
+                vertical={true}
+                renderItem={({ item, index }) => (
+                  <Box
+                    style={styles.newsContainer}
+                    bg={"lightBlue.700"}
+                    shadow={9}
                   >
-                    <Image source={{ uri: item.urlToImage }} style={styles.imageStyle} />
-                    <Text style={tailwind("text-base text-center font-black")}>{item.title}</Text>
-                    <Text style={tailwind("font-semibold text-sm text-center text-blue-600")}>{item.description}</Text>
-                  </Pressable>
-                </Box>
-              )}
-            onSnapToItem={(index) => this.setState({ index: index })}
-            loop={true}
-            />
-
+                    <Pressable onPress={() => Linking.openURL(item.url)}>
+                      <Image
+                        source={{ uri: item.urlToImage }}
+                        style={styles.imageStyle}
+                      />
+                      <Text style={tailwind("text-base text-center font-bold")}>
+                        {item.title}
+                      </Text>
+                      <Text
+                        style={tailwind(
+                          "font-semibold text-sm text-center text-blue-300"
+                        )}
+                      >
+                        {item.description}
+                      </Text>
+                    </Pressable>
+                  </Box>
+                )}
+                onSnapToItem={(index) => this.setState({ index: index })}
+                loop={true}
+              />
+              <Pressable
+                onPress={() => {
+                  Speech.speak(
+                    this.state.article.articles[this.state.index].title +
+                      this.state.article.articles[this.state.index].description
+                  );
+                }}
+                style={styles.micStyle}
+              >
+                <Ionicons name="mic" size={40} color={"#000"} />
+              </Pressable>
             </Center>
           </Modal>
         </NativeBaseProvider>
-      )
+      );
     }
   }
 }
 
 const styles = StyleSheet.create({
   newsContainer: {
-      flex: 1,
-      flexDirection: 'column',
-      margin: 10,
-      padding: 10,
-      borderRadius: 30,
-      top: 20,
-      height: 30
+    flex: 0.6,
+    flexDirection: "column",
+    margin: 10,
+    padding: 10,
+    borderRadius: 30,
+    top: windowHeight / 2 - windowHeight / 2.5,
+    height: 150,
   },
   backIcon: {
-      borderRadius: 30,
-      width: 35,
-      top: 10,
+    borderRadius: 30,
+    width: 35,
+    top: 10,
   },
   imageStyle: {
-      width: 350,
-      height: 200,
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30
-  }
-})
+    width: "100%",
+    height: "50%",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  titleStyle: {
+    fontSize: RFValue(14),
+    fontFamily: "OrelegaOne-Regular",
+    color: "#fff",
+    textAlign: "center",
+    // marginTop: 10,
+    marginBottom: 10,
+  },
+  descriptionStyle: {
+    fontSize: RFValue(10),
+    fontFamily: "Fira Code iScript",
+    textAlign: "center",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  micStyle: {
+    top: "85%",
+    left: windowWidth / 2 - 20,
+    position: "absolute",
+  },
+});

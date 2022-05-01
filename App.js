@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler'
+import "react-native-gesture-handler";
 import React from "react";
 import AppLoading from "expo-app-loading";
 import { DrawerNavigation } from "./navigation/DrawerNavigation";
@@ -11,6 +11,7 @@ export default function App() {
     "Lobster-Regular": require("./assets/fonts/Lobster-Regular.ttf"),
     "Tangerine-Regular": require("./assets/fonts/Tangerine-Regular.ttf"),
     "Tangerine-Bold": require("./assets/fonts/Tangerine-Bold.ttf"),
+    "OrelegaOne-Regular": require("./assets/fonts/OrelegaOne-Regular.ttf"),
   });
 
   if (!fontsLoaded) {

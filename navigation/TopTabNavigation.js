@@ -18,13 +18,13 @@ export default class TopTabNavigation extends Component {
                         borderRadius: 10,
                     },
                     tabBarStyle: {
-                        paddingTop: StatusBar.currentHeight + 15,
+                        paddingTop: StatusBar.currentHeight,
                         marginTop: -35,
                         borderRadius: 10,
                         backgroundColor: "#fff",
                     },
                     tabBarIndicatorStyle: {
-                        backgroundColor: '#444eaf'
+                        backgroundColor: '#fff'
                     },
                     tabBarShowLabel: true,
                     tabBarIcon: ({ focused, color, size }) => {

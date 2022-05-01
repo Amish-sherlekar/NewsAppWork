@@ -1,0 +1,5 @@
+<LottieView
+source={require("./assets/animation/my-favourite-geometric-loader.json")}
+autoplay
+speed={3}
+/>

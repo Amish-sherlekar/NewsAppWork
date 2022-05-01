@@ -21,6 +21,7 @@
     "expo-app-loading": "~1.2.1",
     "expo-constants": "~12.1.3",
     "expo-font": "~10.0.3",
+    "expo-speech": "~10.0.3",
     "expo-status-bar": "~1.1.0",
     "firebase": "8.2.3",
     "formik": "^2.2.9",

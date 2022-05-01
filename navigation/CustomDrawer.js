@@ -15,10 +15,11 @@ import {
 import {
   NativeBaseProvider
 } from "native-base"
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import tailwind from "tailwind-rn"
+import { Ionicons } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -54,19 +55,21 @@ const CustomDrawer = props => {
           </View>
         </DrawerContentScrollView>
         <TouchableOpacity
-          style={styles.signUpSyle}
-          onPress={() => props.navigation.navigate('LogInScreen')}
+        style={{
+          flexDirection: 'row',
+        }}
+        onPress={() => props.navigation.navigate('LogInScreen')}
         >
-          <Ionicons name='exit' size={45} color={'#808080'} />
+          <Ionicons name='exit' size={45} color={'#0000ff'} style={{left: 20}} />
           <Text style={{
-            fontSize: 20,
             fontFamily: 'Fira Code iScript',
-            color: '#808080',
-            marginLeft: 10,
-            marginTop: 10,
-          }}>SignUp</Text>
+            left: 30,
+            fontSize: 20,
+            color: '#0000ff',
+            fontWeight: 'bold',
+            bottom: -8,
+          }}>SignIn/LogIn</Text>
         </TouchableOpacity>
-
       </View>
     </NativeBaseProvider>
   );

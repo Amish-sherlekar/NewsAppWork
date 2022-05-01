@@ -1,5 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
-import React, { Component } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import React, { Component } from "react";
 import {
   Text,
   View,
@@ -14,26 +14,31 @@ import {
   StatusBar,
   ImageBackground,
   Linking,
-} from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import Carousel from 'react-native-snap-carousel';
-import { NewsCategory, NewsSources } from '../NewsProps';
-import Headlines from '../NewsScreen/Headlines';
+  Modal,
+  TextInput,
+} from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
+import Carousel from "react-native-snap-carousel";
+import { NewsCategory, NewsSources } from "../NewsProps";
+import Headlines from "../NewsScreen/Headlines";
+import LottieView from "lottie-react-native";
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
 export default class ExploreScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      article: '',
+      article: "",
+      apiKey: "a1cacd357bb146d2a946022b95be617b",
+      modalOpen: false,
     };
   }
 
   getNews = async () => {
     //change latitude and longitude
     var url =
-      'https://saurav.tech/NewsAPI/top-headlines/category/general/in.json';
+      "https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=a1cacd357bb146d2a946022b95be617b";
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -46,22 +51,27 @@ export default class ExploreScreen extends Component {
       });
   };
 
-  componentDidMount(){
-    this.getNews()
-  };
+  componentDidMount() {
+    this.getNews();
+  }
 
   render() {
-    if (this.state.article === '') {
-      return(
-      <View>
-        <Text>Loading...</Text>
-      </View>  
-      )
+    if (this.state.article === "") {
+      return (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <LottieView
+            source={require("../assets/animation/my-favourite-geometric-loader.json")}
+            autoPlay
+            loop
+          />
+        </View>
+      );
     } else {
       return (
         <ScrollView>
           <StatusBar />
-          
           <View>
             <Text style={styles.categoryText}>Category</Text>
           </View>
@@ -75,7 +85,8 @@ export default class ExploreScreen extends Component {
                     style={styles.cardContainer}
                     onPress={() => {
                       this.props.navigation.navigate(element.item.type);
-                    }}>
+                    }}
+                  >
                     <Image
                       source={{ uri: element.item.image }}
                       style={styles.imageStyle}
@@ -89,17 +100,20 @@ export default class ExploreScreen extends Component {
             showsHorizontalScrollIndicator={false}
           />
 
-          <View style={{ flexDirection: 'row', top: -50 }}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{
-                  marginHorizontal: 10,
-            }}>
-              <Headlines data={this.state.article.articles[0]} />
+          <View style={{ flexDirection: "row", top: -50 }}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{
+                marginHorizontal: 10,
+              }}
+            >
+              <Headlines data={this.state.article.articles[5]} />
               <Headlines data={this.state.article.articles[1]} />
               <Headlines data={this.state.article.articles[2]} />
             </ScrollView>
           </View>
 
-          
           <Text style={styles.sourceText}>Sources</Text>
           <FlatList
             keyExtractor={(element) => element.id}
@@ -111,7 +125,8 @@ export default class ExploreScreen extends Component {
                     style={styles.sourceCardContainer}
                     onPress={() => {
                       this.props.navigation.navigate(element.item.id);
-                    }}>
+                    }}
+                  >
                     <Image
                       source={{ uri: element.item.pic }}
                       style={styles.sourceImageStyle}
@@ -127,7 +142,6 @@ export default class ExploreScreen extends Component {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
           />
-
         </ScrollView>
       );
     }
@@ -137,18 +151,18 @@ export default class ExploreScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#dcdcdc',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#dcdcdc",
+    alignItems: "center",
+    justifyContent: "center",
   },
   cardContainer: {
     top: -70,
-    backgroundColor: '#F5F5f1',
+    backgroundColor: "#F5F5f1",
     width: 250,
     height: 300,
     borderRadius: 20,
     borderWidth: 4,
-    borderColor: '#dcdcdc',
+    borderColor: "#dcdcdc",
   },
   imageStyle: {
     width: 230,
@@ -159,24 +173,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   textStyle: {
-    marginLeft: '10%',
+    marginLeft: "10%",
     marginTop: 10,
     fontSize: RFValue(18),
-    fontFamily: 'Fira Code iScript',
-    fontWeight: '900',
+    fontFamily: "Fira Code iScript",
+    fontWeight: "900",
   },
   sourceCardContainer: {
-    backgroundColor: '#F5F5f1',
+    backgroundColor: "#F5F5f1",
     width: 250,
     height: 300,
     borderRadius: 20,
     borderWidth: 4,
+    borderColor: "#dcdcdc",
   },
   sourceTextStyle: {
     marginLeft: 20,
     fontSize: 35,
-    fontFamily: 'Fira Code iScript',
-    // fontWeight: "900",
+    fontFamily: "Fira Code iScript",
     marginTop: 10,
   },
   sourceImageStyle: {
@@ -185,20 +199,20 @@ const styles = StyleSheet.create({
     width: 220,
     height: 200,
     borderRadius: 10,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   categoryText: {
     paddingTop: -100,
     marginLeft: 30,
     fontSize: RFValue(25),
-    fontFamily: 'Fira Code iScript',
+    fontFamily: "Fira Code iScript",
     borderRadius: 10,
   },
   sourceText: {
     paddingTop: -40,
     marginLeft: 30,
     fontSize: RFValue(25),
-    fontFamily: 'Fira Code iScript',
+    fontFamily: "Fira Code iScript",
     borderRadius: 20,
     width: 230,
   },
