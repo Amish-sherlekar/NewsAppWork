@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,8 +17,6 @@ import Validator from "email-validator";
 import { db, firebase } from "./config";
 
 const windoWidth = Dimensions.get("window").width;
-
-// windoWidth /2 - windowWidth /2.5
 
 const SignupScreen = ({ navigation }) => {
   const [apiKey, setApiKey] = useState("");
@@ -47,7 +45,7 @@ const SignupScreen = ({ navigation }) => {
         apiKey: apiKey,
       });
     } catch (error) {
-      Alert.alert(error.message);
+      alert(error.message);
     }
   };
 
@@ -57,7 +55,10 @@ const SignupScreen = ({ navigation }) => {
         initialValues={{ email: "", username: "", password: "" }}
         onSubmit={(values) => {
           onSignup(values.email, values.password, values.username);
-          navigation.navigate("HomeScreen");
+          navigation.navigate("NewsScreen", {
+            screen: "Profile",
+            user: "jane",
+          });
         }}
         validationSchema={SignupSchema}
         validateOnMount={true}
@@ -89,6 +90,7 @@ const SignupScreen = ({ navigation }) => {
               />
             </View>
 
+            {/* Username */}
             <View
               style={[
                 styles.inputfield,
@@ -136,10 +138,11 @@ const SignupScreen = ({ navigation }) => {
               />
             </View>
 
+            {/* ApiKey */}
             <View style={[styles.inputfield]}>
               <TextInput
                 placeholderTextColor={"#444"}
-                placeholder={"Api Key"}
+                placeholder={" Type here your Api Key inside `` "}
                 onChangeText={(text) => setApiKey(text)}
               />
             </View>
@@ -160,7 +163,9 @@ const SignupScreen = ({ navigation }) => {
 
             <View style={styles.LogInContainer}>
               <Text style={{ fontSize: 18 }}>Already have an account </Text>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("LoginScreen")}
+              >
                 <Text style={{ color: "#6bb0f5", fontSize: 18 }}>Log In</Text>
               </TouchableOpacity>
             </View>

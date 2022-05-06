@@ -4,14 +4,13 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import SavedNews from "../Screens/SavedNews";
 import { Ionicons } from "@expo/vector-icons";
-import StackNavigation from "./StackNavigation";
 import CustomDrawer from "./CustomDrawer";
 import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from "../firebase/LoginScreen";
-import SignupScreen from "../firebase/SignUp";
+import NewsScreen from "../Screens/NewsScreen";
+import StackNavigation from "./StackNavigation";
 
 const windowWidth = Dimensions.get("window").width;
-
+const windowHeight = Dimensions.get("window").height;
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -21,13 +20,23 @@ export const DrawerNavigation = () => {
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawer {...props} />}
         screenOptions={{
-          headerShown: false,
-          drawerActiveBackgroundColor: "#ad0194",
-          drawerActiveTintColor: "#fff",
-          drawerInactiveTintColor: "#808080",
+          headerShown: true,
+          headerTitle: "News Insight",
+          headerTitleStyle: {
+            fontFamily: "SigmarOne-Regular",
+          },
+          drawerItemStyle: {
+            fontFamily: "SigmarOne-Regular",
+            borderRadius: 10,
+          },
+          drawerActiveBackgroundColor: "#000",
+          drawerActiveTintColor: "#F10086",
+          // drawerActiveTintColor: "#2D31FA",
+          drawerInactiveTintColor: "#2D31FA",
+          // drawerInactiveTintColor: "#F10086",
           drawerLabelStyle: {
             marginLeft: -25,
-            fontFamily: "Fira Code iScript",
+            fontFamily: "SigmarOne-Regular",
             fontSize: 15,
           },
           drawerStyle: {
@@ -46,6 +55,15 @@ export const DrawerNavigation = () => {
           }}
         />
         <Drawer.Screen
+          name="All News"
+          component={NewsScreen}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Ionicons name="newspaper" size={35} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
           name="SavedNews"
           component={SavedNews}
           options={{
@@ -57,13 +75,4 @@ export const DrawerNavigation = () => {
       </Drawer.Navigator>
     </NavigationContainer>
   );
-};
-
-export const LogOutNavigation = () => {
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="SignUpScreen" component={SignupScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>;
 };

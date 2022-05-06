@@ -1,29 +1,33 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import NewsScreen from '../Screens/NewsScreen';
-import BusinessScreen from '../NewsScreen/Business';
-import EntertainmentScreen from '../NewsScreen/Entertainment';
-import HealthScreen from '../NewsScreen/Health';
-import ScienceScreen from '../NewsScreen/Science';
-import SportsScreen from '../NewsScreen/Sports';
-import TechnologyScreen from '../NewsScreen/Technology';
-import TopTabNavigation from './TopTabNavigation';
-import BBCNews from '../NewsScreen/Source/BBCNews';
-import CNNNews from '../NewsScreen/Source/CNNNews';
-import FoxNews from '../NewsScreen/Source/FoxNews';
-import GoogleNews from '../NewsScreen/Source/GoogleNews';
-import LoginScreen from '../firebase/LoginScreen';
-import SignupScreen from '../firebase/SignUp';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import NewsScreen from "../Screens/NewsScreen";
+import BusinessScreen from "../NewsScreen/Business";
+import EntertainmentScreen from "../NewsScreen/Entertainment";
+import HealthScreen from "../NewsScreen/Health";
+import ScienceScreen from "../NewsScreen/Science";
+import SportsScreen from "../NewsScreen/Sports";
+import TechnologyScreen from "../NewsScreen/Technology";
+import TopTabNavigation from "./TopTabNavigation";
+import BBCNews from "../NewsScreen/Source/BBCNews";
+import CNNNews from "../NewsScreen/Source/CNNNews";
+import FoxNews from "../NewsScreen/Source/FoxNews";
+import GoogleNews from "../NewsScreen/Source/GoogleNews";
+import LoginScreen from "../firebase/LoginScreen";
+import SignupScreen from "../firebase/SignUp";
+import SearchScreen from "../Screens/SearchScreen";
+import ExploreScreen from "../Screens/ExploreScreen";
 
 const Stack = createStackNavigator();
 
 const StackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName='HomeScreen'
-      screenOptions={({ route }) => ({ headerShown: false })}>
-      <Stack.Screen name="HomeScreen" component={TopTabNavigation} />
+      initialRouteName="ExploreScreen"
+      screenOptions={({ route }) => ({ headerShown: false })}
+    >
+      <Stack.Screen name="ExploreScreen" component={ExploreScreen} />
       <Stack.Screen name="NewsScreen" component={NewsScreen} />
+      <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="General" component={NewsScreen} />
       <Stack.Screen name="Business" component={BusinessScreen} />
       <Stack.Screen name="Entertainment" component={EntertainmentScreen} />
@@ -39,6 +43,6 @@ const StackNavigation = () => {
       <Stack.Screen name="SignUpScreen" component={SignupScreen} />
     </Stack.Navigator>
   );
-}
+};
 
 export default StackNavigation;

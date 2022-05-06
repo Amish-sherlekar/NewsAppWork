@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import {
   Text,
   View,
@@ -6,39 +6,60 @@ import {
   Image,
   TouchableOpacity,
   Linking,
-  ImageBackground,
-  Dimensions,
   StyleSheet,
   Modal,
+  Dimensions,
 } from "react-native";
-import { Pressable, Box, NativeBaseProvider, Center } from "native-base";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
-import Carousel from "react-native-snap-carousel";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import tailwind from "tailwind-rn";
+import { Box, Center, NativeBaseProvider, Pressable } from "native-base";
+import Carousel from "react-native-snap-carousel";
 import { RFValue } from "react-native-responsive-fontsize";
-import * as Speech from "expo-speech";
 import LottieView from "lottie-react-native";
+import * as Speech from "expo-speech";
+import { auth, db, firebase } from "../firebase/config";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default class NewsScreen extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       article: "",
       index: 0,
     };
   }
 
-  speak = () => {
-    const thingToSay = "1";
-    Speech.speak(thingToSay);
+  saveDataToFirebase = async () => {
+    db.collection("users")
+      .doc(auth.currentUser.email)
+      .collection("savedNews")
+      .add({
+        title: this.state.article.articles[this.state.index].title,
+        description: this.state.article.articles[this.state.index].description,
+        url: this.state.article.articles[this.state.index].url,
+        urlToImage: this.state.article.articles[this.state.index].urlToImage,
+        createAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+  };
+
+  speakNews = () => {
+    const greeting =
+      this.state.article.articles[this.state.index].title +
+      this.state.article.articles[this.state.index].description;
+
+    const options = {
+      voice: "en-in-x-ene-local",
+      rate: 0.7,
+    };
+    Speech.speak(greeting, options);
   };
 
   getNews = async () => {
+    //change latitude and longitude
     var url =
-      "https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=a1cacd357bb146d2a946022b95be617b";
+      "https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=004228a5cefb4081880996489549f61f";
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -51,9 +72,10 @@ export default class NewsScreen extends Component {
       });
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.getNews();
-  }
+    console.log(this.props.route.params);
+  };
 
   render() {
     if (this.state.article === "") {
@@ -76,12 +98,12 @@ export default class NewsScreen extends Component {
     } else {
       return (
         <NativeBaseProvider>
-          <Center bg={"lightBlue.700"}>
+          <Center _light={{ bg: "lightBlue.700" }}>
             <Carousel
-              layout="tinder"
+              layout="stack"
               data={this.state.article.articles}
               sliderHeight={windowHeight}
-              itemHeight={windowHeight + 100}
+              itemHeight={windowHeight - 100}
               vertical={true}
               renderItem={({ item, index }) => (
                 <Box
@@ -94,19 +116,13 @@ export default class NewsScreen extends Component {
                       source={{ uri: item.urlToImage }}
                       style={styles.imageStyle}
                     />
-                    <Text
-                      style={[
-                        tailwind("text-base text-center"),
-                        styles.titleStyle,
-                      ]}
-                    >
+                    <Text style={tailwind("text-base text-center font-bold")}>
                       {item.title}
                     </Text>
                     <Text
-                      style={[
-                        tailwind("text-sm text-center text-indigo-100"),
-                        styles.descriptionStyle,
-                      ]}
+                      style={tailwind(
+                        "font-semibold text-sm text-center text-blue-300"
+                      )}
                     >
                       {item.description}
                     </Text>
@@ -118,14 +134,27 @@ export default class NewsScreen extends Component {
             />
             <Pressable
               onPress={() => {
-                Speech.speak(
-                  this.state.article.articles[this.state.index].title +
-                    this.state.article.articles[this.state.index].description
-                );
+                this.speakNews();
               }}
               style={styles.micStyle}
             >
-              <Ionicons name="mic" size={40} color={"#000"} />
+              <Ionicons name="volume-high" size={40} color={"#000"} />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                Speech.stop();
+              }}
+              style={styles.stopStyle}
+            >
+              <Ionicons name="stop-circle" size={40} color={"#000"} />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                this.saveDataToFirebase();
+              }}
+              style={styles.saveStyle}
+            >
+              <Ionicons name="save" size={40} color={"#000"} />
             </Pressable>
           </Center>
         </NativeBaseProvider>
@@ -141,7 +170,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 30,
-    top: windowHeight / 2 - windowHeight / 2.5,
+    top: windowHeight / 2 - windowHeight / 2,
     height: 150,
   },
   backIcon: {
@@ -171,8 +200,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   micStyle: {
-    top: "85%",
+    top: "75%",
+    left: windowWidth / 2 - 80,
+    position: "absolute",
+  },
+  stopStyle: {
+    top: "75%",
     left: windowWidth / 2 - 20,
+    position: "absolute",
+  },
+  saveStyle: {
+    top: "75%",
+    left: windowWidth / 2 + 50,
     position: "absolute",
   },
 });

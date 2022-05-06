@@ -16,12 +16,14 @@ import {
   Linking,
   Modal,
   TextInput,
+  ToastAndroid,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import Carousel from "react-native-snap-carousel";
 import { NewsCategory, NewsSources } from "../NewsProps";
 import Headlines from "../NewsScreen/Headlines";
 import LottieView from "lottie-react-native";
+import { auth, db, firebase } from "../firebase/config";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -30,15 +32,13 @@ export default class ExploreScreen extends Component {
     super(props);
     this.state = {
       article: "",
-      apiKey: "a1cacd357bb146d2a946022b95be617b",
       modalOpen: false,
     };
   }
 
   getNews = async () => {
     //change latitude and longitude
-    var url =
-      "https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=a1cacd357bb146d2a946022b95be617b";
+    var url = `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=a1cacd357bb146d2a946022b95be617b`;
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -50,9 +50,9 @@ export default class ExploreScreen extends Component {
         console.error(error);
       });
   };
-
   componentDidMount() {
     this.getNews();
+    console.log(this.props.route.params);
   }
 
   render() {
@@ -69,80 +69,85 @@ export default class ExploreScreen extends Component {
         </View>
       );
     } else {
+      ToastAndroid.show("Hello " + auth.currentUser.email, ToastAndroid.SHORT);
       return (
-        <ScrollView>
-          <StatusBar />
-          <View>
-            <Text style={styles.categoryText}>Category</Text>
-          </View>
-          <FlatList
-            keyExtractor={(element) => element.id}
-            data={NewsCategory}
-            renderItem={(element) => {
-              return (
-                <View style={{ marginTop: 100, marginLeft: 30 }}>
-                  <TouchableOpacity
-                    style={styles.cardContainer}
-                    onPress={() => {
-                      this.props.navigation.navigate(element.item.type);
-                    }}
-                  >
-                    <Image
-                      source={{ uri: element.item.image }}
-                      style={styles.imageStyle}
-                    />
-                    <Text style={styles.textStyle}>{element.item.type}</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
-
-          <View style={{ flexDirection: "row", top: -50 }}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
+        <View>
+          <ScrollView>
+            <StatusBar />
+            <TouchableOpacity
               style={{
-                marginHorizontal: 10,
+                left: windowWidth / 2 - 170,
+                width: 50,
+                height: 50,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 25,
+                top: 20,
+              }}
+              onPress={() => {
+                this.props.navigation.navigate("Search");
               }}
             >
-              <Headlines data={this.state.article.articles[5]} />
-              <Headlines data={this.state.article.articles[1]} />
-              <Headlines data={this.state.article.articles[2]} />
-            </ScrollView>
-          </View>
+              <Ionicons name="ios-search" size={30} color="#000" />
+            </TouchableOpacity>
+            <View>
+              <Text style={styles.categoryText}>Category</Text>
+            </View>
+            <FlatList
+              keyExtractor={(element) => element.id}
+              data={NewsCategory}
+              renderItem={(element) => {
+                return (
+                  <View style={{ marginTop: 100, marginLeft: 30 }}>
+                    <TouchableOpacity
+                      style={styles.cardContainer}
+                      onPress={() => {
+                        this.props.navigation.navigate(element.item.type);
+                      }}
+                    >
+                      <Image
+                        source={{ uri: element.item.image }}
+                        style={styles.imageStyle}
+                      />
+                      <Text style={styles.textStyle}>{element.item.type}</Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
 
-          <Text style={styles.sourceText}>Sources</Text>
-          <FlatList
-            keyExtractor={(element) => element.id}
-            data={NewsSources}
-            renderItem={(element) => {
-              return (
-                <View style={{ paddingLeft: 20 }}>
-                  <TouchableOpacity
-                    style={styles.sourceCardContainer}
-                    onPress={() => {
-                      this.props.navigation.navigate(element.item.id);
-                    }}
-                  >
-                    <Image
-                      source={{ uri: element.item.pic }}
-                      style={styles.sourceImageStyle}
-                    />
-                    <Text style={styles.sourceTextStyle}>
-                      {element.item.name}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-            style={{ margin: 10 }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
-        </ScrollView>
+            <Text style={styles.sourceText}>Sources</Text>
+            <FlatList
+              keyExtractor={(element) => element.id}
+              data={NewsSources}
+              renderItem={(element) => {
+                return (
+                  <View style={{ paddingLeft: 20 }}>
+                    <TouchableOpacity
+                      style={styles.sourceCardContainer}
+                      onPress={() => {
+                        this.props.navigation.navigate(element.item.id);
+                      }}
+                    >
+                      <Image
+                        source={{ uri: element.item.pic }}
+                        style={styles.sourceImageStyle}
+                      />
+                      <Text style={styles.sourceTextStyle}>
+                        {element.item.name}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+              style={{ margin: 10 }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          </ScrollView>
+        </View>
       );
     }
   }
@@ -156,7 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   cardContainer: {
-    top: -70,
+    top: -80,
     backgroundColor: "#F5F5f1",
     width: 250,
     height: 300,
@@ -202,11 +207,14 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   categoryText: {
-    paddingTop: -100,
+    paddingTop: 50,
     marginLeft: 30,
     fontSize: RFValue(25),
     fontFamily: "Fira Code iScript",
     borderRadius: 10,
+    alignItems: "center",
+    color: "#000",
+    fontWeight: 'bold'
   },
   sourceText: {
     paddingTop: -40,
@@ -215,5 +223,19 @@ const styles = StyleSheet.create({
     fontFamily: "Fira Code iScript",
     borderRadius: 20,
     width: 230,
+    color: "#000",
+    fontWeight: 'bold'
+  },
+  searchHeaderStyle: {
+    backgroundColor: "#F5F5f1",
+    width: "100%",
+    height: 50,
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: "#dcdcdc",
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
   },
 });

@@ -1,4 +1,4 @@
-export const NewsCategory = [
+	export const NewsCategory = [
     {
       type: "Entertainment",
       image:

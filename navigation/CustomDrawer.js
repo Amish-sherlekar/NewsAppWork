@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -7,28 +7,26 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-} from 'react-native';
+} from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
-} from '@react-navigation/drawer';
-import {
-  NativeBaseProvider
-} from "native-base"
+} from "@react-navigation/drawer";
+import { NativeBaseProvider } from "native-base";
 // import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import tailwind from "tailwind-rn"
-import { Ionicons } from '@expo/vector-icons';
+import Feather from "react-native-vector-icons/Feather";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import tailwind from "tailwind-rn";
+import { Ionicons } from "@expo/vector-icons";
+import { auth, firebase } from "../firebase/config";
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
-const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get("window").height;
 
-const CustomDrawer = props => {
-
+const CustomDrawer = (props) => {
   const goBack = () => {
-    props.navigation.goBack()
+    props.navigation.goBack();
   };
 
   return (
@@ -38,37 +36,51 @@ const CustomDrawer = props => {
           {...props}
           contentContainerStyle={{ height: windowHeight - 10 }}
         >
-          <ImageBackground source={require('../assets/images/bg2.jpg')} style={{ width: windowWidth - 10, height: 400, bottom: 10 }}>
+          <ImageBackground
+            source={require("../assets/images/bg2.jpg")}
+            style={{
+              height: windowHeight / 2.3,
+              width: windowWidth,
+              justifyContent: "center",
+              alignItems: "center",
+              bottom: 10
+            }}
+          >
             <Feather
-              name='chevron-left'
+              name="chevron-left"
               size={30}
-              onPress={() => { goBack() }}
-              color='#fff'
-              style={
-                [
-                  styles.backIcon,
-                  tailwind('bg-indigo-400')
-                ]} />
+              onPress={() => {
+                goBack();
+              }}
+              color="#fff"
+              style={[styles.backIcon, tailwind("bg-indigo-400")]}
+            />
           </ImageBackground>
-          <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: -80 }}>
+          <View style={{ flex: 1, backgroundColor: "#fff" }}>
             <DrawerItemList {...props} />
           </View>
         </DrawerContentScrollView>
         <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-        }}
-        onPress={() => props.navigation.navigate('LogInScreen')}
+          style={{
+            flexDirection: "row",
+          }}
+          onPress={() => {
+            firebase.auth().signOut();
+            console.log("logout");
+          }}
         >
-          <Ionicons name='exit' size={45} color={'#0000ff'} style={{left: 20}} />
-          <Text style={{
-            fontFamily: 'Fira Code iScript',
-            left: 30,
-            fontSize: 20,
-            color: '#0000ff',
-            fontWeight: 'bold',
-            bottom: -8,
-          }}>SignIn/LogIn</Text>
+          <Ionicons name="exit" size={45} color={"#000"} style={{ left: 20 }} />
+          <Text
+            style={{
+              fontFamily: "SigmarOne-Regular",
+              left: 30,
+              fontSize: 20,
+              color: "#000",
+              bottom: -8,
+            }}
+          >
+            Sign Out
+          </Text>
         </TouchableOpacity>
       </View>
     </NativeBaseProvider>
@@ -79,17 +91,17 @@ export default CustomDrawer;
 
 const styles = StyleSheet.create({
   backIcon: {
-    position: 'relative',
+    position: "relative",
     left: windowWidth / 2 + 120,
     top: 6,
     borderRadius: 10,
     padding: 5,
   },
   signUpSyle: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 20,
     height: 60,
-    flexDirection: 'row'
-  }
-})
+    flexDirection: "row",
+  },
+});

@@ -18,6 +18,7 @@ import Carousel from "react-native-snap-carousel";
 import { RFValue } from "react-native-responsive-fontsize";
 import LottieView from "lottie-react-native";
 import * as Speech from "expo-speech";
+import { auth, db, firebase } from "../firebase/config";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -31,8 +32,32 @@ export default class EntertainmentScreen extends Component {
     };
   }
 
+  saveDataToFirebase = async () => {
+    db.collection("users")
+      .doc(auth.currentUser.email)
+      .collection("savedNews")
+      .add({
+        title: this.state.article.articles[this.state.index].title,
+        description: this.state.article.articles[this.state.index].description,
+        url: this.state.article.articles[this.state.index].url,
+        urlToImage: this.state.article.articles[this.state.index].urlToImage,
+        createAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+  };
+
+  speakNews = () => {
+    const greeting =
+      this.state.article.articles[this.state.index].title +
+      this.state.article.articles[this.state.index].description;
+
+    const options = {
+      voice: "bn-IN-language",
+      rate: 0.7,
+    };
+    Speech.speak(greeting, options);
+  };
+
   getNews = async () => {
-    //change latitude and longitude
     var url =
       "https://newsapi.org/v2/top-headlines?country=in&category=entertainment&apiKey=a1cacd357bb146d2a946022b95be617b";
     return fetch(url)
@@ -76,7 +101,7 @@ export default class EntertainmentScreen extends Component {
             <Center _light={{ bg: "lightBlue.700" }}>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate("HomeScreen");
+                  this.props.navigation.goBack();
                 }}
               >
                 <Ionicons name="arrow-back" size={30} />
@@ -116,14 +141,27 @@ export default class EntertainmentScreen extends Component {
               />
               <Pressable
                 onPress={() => {
-                  Speech.speak(
-                    this.state.article.articles[this.state.index].title +
-                      this.state.article.articles[this.state.index].description
-                  );
+                  this.speakNews();
                 }}
                 style={styles.micStyle}
               >
                 <Ionicons name="mic" size={40} color={"#000"} />
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  Speech.stop();
+                }}
+                style={styles.stopStyle}
+              >
+                <Ionicons name="stop-circle" size={40} color={"#000"} />
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  this.saveDataToFirebase();
+                }}
+                style={styles.saveStyle}
+              >
+                <Ionicons name="save" size={40} color={"#000"} />
               </Pressable>
             </Center>
           </Modal>
@@ -171,7 +209,17 @@ const styles = StyleSheet.create({
   },
   micStyle: {
     top: "85%",
+    left: windowWidth / 2 - 80,
+    position: "absolute",
+  },
+  stopStyle: {
+    top: "85%",
     left: windowWidth / 2 - 20,
+    position: "absolute",
+  },
+  saveStyle: {
+    top: "85%",
+    left: windowWidth / 2 + 50,
     position: "absolute",
   },
 });

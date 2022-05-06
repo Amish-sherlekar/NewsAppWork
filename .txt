@@ -1,5 +1,83 @@
-<LottieView
-source={require("./assets/animation/my-favourite-geometric-loader.json")}
-autoplay
-speed={3}
-/>
+<Pressable
+onPress={() => {
+  this.speakNews();
+}}
+style={styles.micStyle}
+>
+<Ionicons name="mic" size={40} color={"#000"} />
+</Pressable>
+<Pressable
+onPress={() => {
+  Speech.stop();
+}}
+style={styles.stopStyle}
+>
+<Ionicons name="stop-circle" size={40} color={"#000"} />
+</Pressable>
+<Pressable
+onPress={() => {
+  this.saveDataToFirebase();
+}}
+style={styles.saveStyle}
+>
+<Ionicons name="save" size={40} color={"#000"} />
+</Pressable>
+</Center>
+</NativeBaseProvider>
+);
+}
+}
+}
+
+const styles = StyleSheet.create({
+newsContainer: {
+flex: 0.6,
+flexDirection: "column",
+margin: 10,
+padding: 10,
+borderRadius: 30,
+top: windowHeight / 2 - windowHeight / 2,
+height: 150,
+},
+backIcon: {
+borderRadius: 30,
+width: 35,
+top: 10,
+},
+imageStyle: {
+width: "100%",
+height: "50%",
+borderTopLeftRadius: 30,
+borderTopRightRadius: 30,
+},
+titleStyle: {
+fontSize: RFValue(14),
+fontFamily: "OrelegaOne-Regular",
+color: "#fff",
+textAlign: "center",
+// marginTop: 10,
+marginBottom: 10,
+},
+descriptionStyle: {
+fontSize: RFValue(10),
+fontFamily: "Fira Code iScript",
+textAlign: "center",
+marginTop: 10,
+marginBottom: 10,
+},
+micStyle: {
+top: "75%",
+left: windowWidth / 2 - 80,
+position: "absolute",
+},
+stopStyle: {
+top: "75%",
+left: windowWidth / 2 - 20,
+position: "absolute",
+},
+saveStyle: {
+top: "75%",
+left: windowWidth / 2 + 50,
+position: "absolute",
+},
+});
