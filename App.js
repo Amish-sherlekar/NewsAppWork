@@ -4,9 +4,6 @@ import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
-{
-  /* Screens */
-}
 import LoadingScreen from "./Screens/LoadingScreen";
 import DashBoardScreen from "./Screens/DashBoardScreen";
 import SignupScreen from "./firebase/SignUp";
