@@ -46,20 +46,20 @@ export const DrawerNavigation = () => {
         }}
       >
         <Drawer.Screen
-          name="Home"
-          component={StackNavigation}
-          options={{
-            drawerIcon: ({ color }) => (
-              <Ionicons name="home" size={35} color={color} />
-            ),
-          }}
-        />
-        <Drawer.Screen
           name="All News"
           component={NewsScreen}
           options={{
             drawerIcon: ({ color }) => (
               <Ionicons name="newspaper" size={35} color={color} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Explore"
+          component={StackNavigation}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Ionicons name="home" size={35} color={color} />
             ),
           }}
         />

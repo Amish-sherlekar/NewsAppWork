@@ -32,7 +32,9 @@ const SavedNews = () => {
 
   const getSavedNews = async () => {
     const savedNews = db
-      .collectionGroup("savedNews")
+      .collection("users")
+      .doc(auth.currentUser.email)
+      .collection("savedNews")
       .orderBy("createAt", "desc")
       .onSnapshot((snapshot) => {
         setSavingNews(snapshot.docs.map((doc) => doc.data()));
@@ -44,15 +46,16 @@ const SavedNews = () => {
     <View style={styles.newsContainer}>
       <View
         style={{
-          alignItems: "center",
+          // alignItems: "center",
+          width: 360,
+          height: "100%",
         }}
       >
         <Image
           source={{ uri: item.urlToImage }}
           style={{
-            width: "105%",
+            width: "100%",
             height: 200,
-            left: 10,
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
           }}
@@ -69,7 +72,7 @@ const SavedNews = () => {
           <Text
             style={tailwind("font-semibold text-sm text-center text-blue-300")}
           >
-            {item.description}
+            {item.description.slice(0, 80)}
           </Text>
         </View>
         <TouchableOpacity

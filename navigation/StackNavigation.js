@@ -7,7 +7,6 @@ import HealthScreen from "../NewsScreen/Health";
 import ScienceScreen from "../NewsScreen/Science";
 import SportsScreen from "../NewsScreen/Sports";
 import TechnologyScreen from "../NewsScreen/Technology";
-import TopTabNavigation from "./TopTabNavigation";
 import BBCNews from "../NewsScreen/Source/BBCNews";
 import CNNNews from "../NewsScreen/Source/CNNNews";
 import FoxNews from "../NewsScreen/Source/FoxNews";

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -22,32 +22,71 @@ import { auth, db, firebase } from "../firebase/config";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-export default class NewsScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      article: "",
-      index: 0,
-    };
-  }
+// export default class NewsScreen extends Component {
+export default function NewsScreen() {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     article: "",
+  //     index: 0,
+  //     keyToApi: "",
+  //   };
+  // }
 
-  saveDataToFirebase = async () => {
+  const [article, setArticle] = useState("");
+  const [index, setIndex] = useState(0);
+  const [keyToApi, setKeyToApi] = useState("");
+
+  const grabApiKey = () => {
+    db.collection("users")
+      .doc(auth.currentUser.email)
+      .onSnapshot((doc) => {
+        // this.setState({ keyToApi: doc.data() });
+        setKeyToApi(doc.data().apiKey);
+        // console.log(keyToApi);
+      });
+  };
+
+  // const saveDataToFirebase = async () => {
+  //   db.collection("users")
+  //     .doc(auth.currentUser.email)
+  //     .collection("savedNews")
+  //     .add({
+  //       title: this.state.article.articles[this.state.index].title,
+  //       description: this.state.article.articles[this.state.index].description,
+  //       url: this.state.article.articles[this.state.index].url,
+  //       urlToImage: this.state.article.articles[this.state.index].urlToImage,
+  //       createAt: firebase.firestore.FieldValue.serverTimestamp(),
+  //     });
+  // };
+
+  const saveDataToFirebase = async () => {
     db.collection("users")
       .doc(auth.currentUser.email)
       .collection("savedNews")
       .add({
-        title: this.state.article.articles[this.state.index].title,
-        description: this.state.article.articles[this.state.index].description,
-        url: this.state.article.articles[this.state.index].url,
-        urlToImage: this.state.article.articles[this.state.index].urlToImage,
+        title: article.articles[index].title,
+        description: article.articles[index].description,
+        url: article.articles[index].url,
+        urlToImage: article.articles[index].urlToImage,
         createAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
   };
 
-  speakNews = () => {
+  // const speakNews = () => {
+  //   const greeting =
+  //     this.state.article.articles[this.state.index].title +
+  //     this.state.article.articles[this.state.index].description;
+
+  //   const options = {
+  //     voice: "en-in-x-ene-local",
+  //     rate: 0.7,
+  //   };
+  //   Speech.speak(greeting, options);
+  // };
+  const speakNews = () => {
     const greeting =
-      this.state.article.articles[this.state.index].title +
-      this.state.article.articles[this.state.index].description;
+      article.articles[index].title + article.articles[index].description;
 
     const options = {
       voice: "en-in-x-ene-local",
@@ -56,111 +95,118 @@ export default class NewsScreen extends Component {
     Speech.speak(greeting, options);
   };
 
-  getNews = async () => {
+  const getNews = async () => {
     //change latitude and longitude
-    var url =
-      "https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=004228a5cefb4081880996489549f61f";
-    return fetch(url)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          article: responseJson,
+    try {
+      var url = `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=${keyToApi}`;
+      return fetch(url)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          // this.setState({
+          //   article: responseJson,
+          // });
+          setArticle(responseJson);
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  componentDidMount = () => {
-    this.getNews();
-    console.log(this.props.route.params);
-  };
-
-  render() {
-    if (this.state.article === "") {
-      return (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#004282",
-          }}
-        >
-          <LottieView
-            source={require("../assets/animation/my-favourite-geometric-loader.json")}
-            autoPlay
-            loop
-          />
-        </View>
-      );
-    } else {
-      return (
-        <NativeBaseProvider>
-          <Center _light={{ bg: "lightBlue.700" }}>
-            <Carousel
-              layout="stack"
-              data={this.state.article.articles}
-              sliderHeight={windowHeight}
-              itemHeight={windowHeight - 100}
-              vertical={true}
-              renderItem={({ item, index }) => (
-                <Box
-                  style={styles.newsContainer}
-                  bg={"lightBlue.700"}
-                  shadow={9}
-                >
-                  <Pressable onPress={() => Linking.openURL(item.url)}>
-                    <Image
-                      source={{ uri: item.urlToImage }}
-                      style={styles.imageStyle}
-                    />
-                    <Text style={tailwind("text-base text-center font-bold")}>
-                      {item.title}
-                    </Text>
-                    <Text
-                      style={tailwind(
-                        "font-semibold text-sm text-center text-blue-300"
-                      )}
-                    >
-                      {item.description}
-                    </Text>
-                  </Pressable>
-                </Box>
-              )}
-              onSnapToItem={(index) => this.setState({ index: index })}
-              loop={true}
-            />
-            <Pressable
-              onPress={() => {
-                this.speakNews();
-              }}
-              style={styles.micStyle}
-            >
-              <Ionicons name="volume-high" size={40} color={"#000"} />
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                Speech.stop();
-              }}
-              style={styles.stopStyle}
-            >
-              <Ionicons name="stop-circle" size={40} color={"#000"} />
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                this.saveDataToFirebase();
-              }}
-              style={styles.saveStyle}
-            >
-              <Ionicons name="save" size={40} color={"#000"} />
-            </Pressable>
-          </Center>
-        </NativeBaseProvider>
-      );
+    } catch (err) {
+      console.log(err);
     }
+  };
+
+  // componentDidMount = () => {
+  //   this.getNews();
+  // };
+
+  useEffect(() => {
+    getNews();
+    grabApiKey();
+  }, []);
+
+  // render() {
+
+  // if (this.state.article === "") {
+  if (article === "") {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#004282",
+        }}
+      >
+        <LottieView
+          source={require("../assets/animation/my-favourite-geometric-loader.json")}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  } else {
+    return (
+      <NativeBaseProvider>
+        <Center _light={{ bg: "lightBlue.700" }}>
+          <Carousel
+            layout="stack"
+            data={article.articles}
+            sliderHeight={windowHeight}
+            itemHeight={windowHeight + 100}
+            vertical={true}
+            renderItem={({ item, index }) => (
+              <Box style={styles.newsContainer} bg={"lightBlue.700"} shadow={9}>
+                <Pressable onPress={() => Linking.openURL(item.url)}>
+                  <Image
+                    source={{ uri: item.urlToImage }}
+                    style={styles.imageStyle}
+                  />
+                  <Text style={tailwind("text-base text-center font-bold")}>
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={tailwind(
+                      "font-semibold text-sm text-center text-blue-300"
+                    )}
+                  >
+                    {item.description}
+                  </Text>
+                </Pressable>
+              </Box>
+            )}
+            // onSnapToItem={(index) => this.setState({ index: index })}
+            onSnapToItem={(index) => setIndex(index)}
+            loop={true}
+          />
+          <Pressable
+            onPress={() => {
+              speakNews();
+            }}
+            style={styles.micStyle}
+          >
+            <Ionicons name="volume-high" size={40} color={"#000"} />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              Speech.stop();
+            }}
+            style={styles.stopStyle}
+          >
+            <Ionicons name="stop-circle" size={40} color={"#000"} />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              saveDataToFirebase();
+            }}
+            style={styles.saveStyle}
+          >
+            <Ionicons name="save" size={40} color={"#000"} />
+          </Pressable>
+        </Center>
+      </NativeBaseProvider>
+    );
   }
+  // }
 }
 
 const styles = StyleSheet.create({
@@ -170,7 +216,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 30,
-    top: windowHeight / 2 - windowHeight / 2,
+    top: windowHeight / 2 - windowHeight / 2.2,
     height: 150,
   },
   backIcon: {
@@ -200,17 +246,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   micStyle: {
-    top: "75%",
+    top: "85%",
     left: windowWidth / 2 - 80,
     position: "absolute",
   },
   stopStyle: {
-    top: "75%",
+    top: "85%",
     left: windowWidth / 2 - 20,
     position: "absolute",
   },
   saveStyle: {
-    top: "75%",
+    top: "85%",
     left: windowWidth / 2 + 50,
     position: "absolute",
   },

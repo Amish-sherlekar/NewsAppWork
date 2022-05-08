@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -11,28 +11,45 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { auth, db, firebase } from "../firebase/config";
+import LottieView from "lottie-react-native";
 
 const windowWidth = Dimensions.get("window").width;
 
-export default class SearchScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      article: "",
-      searchText: "",
-    };
-  }
+export default function SearchScreen({ navigation }) {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     article: "",
+  //     searchText: "",
+  //   };
+  // }
 
-  getNews = async () => {
-    //change latitude and longitude
+  const [article, setArticle] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [keyToApi, setKeyToApi] = useState("");
+  const [index, setIndex] = useState(0);
+
+  const grabApiKey = () => {
+    db.collection("users")
+      .doc(auth.currentUser.email)
+      .onSnapshot((doc) => {
+        // this.setState({ keyToApi: doc.data() });
+        setKeyToApi(doc.data().apiKey);
+        console.log(keyToApi);
+      });
+  };
+
+  const getNews = async () => {
     var goNews = await fetch(
-      `https://newsapi.org/v2/everything?q=${this.state.searchText}&apiKey=004228a5cefb4081880996489549f61f`
+      `https://newsapi.org/v2/everything?q=${searchText}&apiKey=${keyToApi}`
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({
-          article: responseJson,
-        });
+        // this.setState({
+        //   article: responseJson,
+        // });
+        setArticle(responseJson);
       })
       .catch((error) => {
         console.error(error);
@@ -40,15 +57,38 @@ export default class SearchScreen extends Component {
     return goNews;
   };
 
-  componentDidMount() {
-    this.getNews();
-  }
+  // componentDidMount() {
+  //   this.getNews();
+  // }
+  useEffect(() => {
+      getNews();
+      grabApiKey();
+  }, []);
 
-  render() {
+  // render() {
+  if (article === "") {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#004282",
+        }}
+      >
+        <LottieView
+          source={require("../assets/animation/bodybuilder-dancer.json")}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  } else {
+    console.log(keyToApi);
     return (
       <Modal visible={true} animationType="slide">
         <View styles={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Feather
               name="arrow-left-circle"
               size={40}
@@ -64,9 +104,10 @@ export default class SearchScreen extends Component {
               style={styles.searchInputStyle}
               placeholderTextColor="#808080"
               onChangeText={(text) => {
-                this.setState({ searchText: text });
+                // this.setState({ searchText: text });
+                setSearchText(text);
               }}
-              onSubmitEditing={() => this.getNews()}
+              onSubmitEditing={() => getNews()}
             />
           </View>
           <View
@@ -77,8 +118,8 @@ export default class SearchScreen extends Component {
           >
             <FlatList
               style={styles.flatListStyle}
-              keyExtractor={(item) => item.title}
-              data={this.state.article.articles}
+              keyExtractor={(item) => setIndex(item)}
+              data={article.articles}
               renderItem={({ item }) => (
                 <View
                   style={{

@@ -3,7 +3,6 @@ import React from "react";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import {createA} from "@react-navigation/native"
 
 import LoadingScreen from "./Screens/LoadingScreen";
 import DashBoardScreen from "./Screens/DashBoardScreen";

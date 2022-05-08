@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { firebase } from "../firebase/config";
 import LottieView from "lottie-react-native";
 
@@ -21,10 +21,12 @@ export default class LoadingScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <LottieView
-          source={require("../assets/animation/loader.json")}
-          autoplay={true}
-          loop={true}
+        <Image
+          source={require("../assets/images/welcome_bg.png")}
+          style={{
+            width: "100%",
+            height: "30%",
+          }}
         />
       </View>
     );
