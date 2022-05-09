@@ -23,8 +23,6 @@ export default function App() {
     "Fira Code iScript": require("./assets/fonts/FiraCodeiScript-Italic.ttf"),
     "Chango-Regular": require("./assets/fonts/Chango-Regular.ttf"),
     "Lobster-Regular": require("./assets/fonts/Lobster-Regular.ttf"),
-    "Tangerine-Regular": require("./assets/fonts/Tangerine-Regular.ttf"),
-    "Tangerine-Bold": require("./assets/fonts/Tangerine-Bold.ttf"),
     "OrelegaOne-Regular": require("./assets/fonts/OrelegaOne-Regular.ttf"),
     "SigmarOne-Regular": require("./assets/fonts/SigmarOne-Regular.ttf"),
   });
