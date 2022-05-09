@@ -17,14 +17,6 @@ import LottieView from "lottie-react-native";
 const windowWidth = Dimensions.get("window").width;
 
 export default function SearchScreen({ navigation }) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     article: "",
-  //     searchText: "",
-  //   };
-  // }
-
   const [article, setArticle] = useState("");
   const [searchText, setSearchText] = useState("");
   const [keyToApi, setKeyToApi] = useState("");
@@ -34,7 +26,6 @@ export default function SearchScreen({ navigation }) {
     db.collection("users")
       .doc(auth.currentUser.email)
       .onSnapshot((doc) => {
-        // this.setState({ keyToApi: doc.data() });
         setKeyToApi(doc.data().apiKey);
         console.log(keyToApi);
       });
@@ -46,9 +37,6 @@ export default function SearchScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        // this.setState({
-        //   article: responseJson,
-        // });
         setArticle(responseJson);
       })
       .catch((error) => {
@@ -57,15 +45,11 @@ export default function SearchScreen({ navigation }) {
     return goNews;
   };
 
-  // componentDidMount() {
-  //   this.getNews();
-  // }
   useEffect(() => {
-      getNews();
-      grabApiKey();
+    getNews();
+    grabApiKey();
   }, []);
 
-  // render() {
   if (article === "") {
     return (
       <View
@@ -104,7 +88,6 @@ export default function SearchScreen({ navigation }) {
               style={styles.searchInputStyle}
               placeholderTextColor="#808080"
               onChangeText={(text) => {
-                // this.setState({ searchText: text });
                 setSearchText(text);
               }}
               onSubmitEditing={() => getNews()}
