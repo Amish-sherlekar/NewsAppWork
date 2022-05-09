@@ -22,17 +22,7 @@ import { auth, db, firebase } from "../firebase/config";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-// export default class NewsScreen extends Component {
 export default function NewsScreen() {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     article: "",
-  //     index: 0,
-  //     keyToApi: "",
-  //   };
-  // }
-
   const [article, setArticle] = useState("");
   const [index, setIndex] = useState(0);
   const [keyToApi, setKeyToApi] = useState("");
@@ -41,24 +31,9 @@ export default function NewsScreen() {
     db.collection("users")
       .doc(auth.currentUser.email)
       .onSnapshot((doc) => {
-        // this.setState({ keyToApi: doc.data() });
         setKeyToApi(doc.data().apiKey);
-        // console.log(keyToApi);
       });
   };
-
-  // const saveDataToFirebase = async () => {
-  //   db.collection("users")
-  //     .doc(auth.currentUser.email)
-  //     .collection("savedNews")
-  //     .add({
-  //       title: this.state.article.articles[this.state.index].title,
-  //       description: this.state.article.articles[this.state.index].description,
-  //       url: this.state.article.articles[this.state.index].url,
-  //       urlToImage: this.state.article.articles[this.state.index].urlToImage,
-  //       createAt: firebase.firestore.FieldValue.serverTimestamp(),
-  //     });
-  // };
 
   const saveDataToFirebase = async () => {
     db.collection("users")
@@ -73,17 +48,6 @@ export default function NewsScreen() {
       });
   };
 
-  // const speakNews = () => {
-  //   const greeting =
-  //     this.state.article.articles[this.state.index].title +
-  //     this.state.article.articles[this.state.index].description;
-
-  //   const options = {
-  //     voice: "en-in-x-ene-local",
-  //     rate: 0.7,
-  //   };
-  //   Speech.speak(greeting, options);
-  // };
   const speakNews = () => {
     const greeting =
       article.articles[index].title + article.articles[index].description;
@@ -96,15 +60,12 @@ export default function NewsScreen() {
   };
 
   const getNews = async () => {
-    //change latitude and longitude
+
     try {
       var url = `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=${keyToApi}`;
       return fetch(url)
         .then((response) => response.json())
         .then((responseJson) => {
-          // this.setState({
-          //   article: responseJson,
-          // });
           setArticle(responseJson);
         })
         .catch((error) => {
@@ -115,18 +76,11 @@ export default function NewsScreen() {
     }
   };
 
-  // componentDidMount = () => {
-  //   this.getNews();
-  // };
-
   useEffect(() => {
     getNews();
     grabApiKey();
   }, []);
 
-  // render() {
-
-  // if (this.state.article === "") {
   if (article === "") {
     return (
       <View

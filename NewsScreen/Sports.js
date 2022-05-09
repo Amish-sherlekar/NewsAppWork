@@ -22,17 +22,7 @@ import { auth, db, firebase } from "../firebase/config";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-// export default class SportsScreen extends Component {
 export default function SportsScreen({ navigation }) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     article: "",
-  //     index: 0,
-  //     keyToApi: "",
-  //   };
-  // }
-
   const [article, setArticle] = useState("");
   const [index, setIndex] = useState(0);
   const [keyToApi, setKeyToApi] = useState("");
@@ -47,18 +37,6 @@ export default function SportsScreen({ navigation }) {
       });
   };
 
-  // const saveDataToFirebase = async () => {
-  //   db.collection("users")
-  //     .doc(auth.currentUser.email)
-  //     .collection("savedNews")
-  //     .add({
-  //       title: this.state.article.articles[this.state.index].title,
-  //       description: this.state.article.articles[this.state.index].description,
-  //       url: this.state.article.articles[this.state.index].url,
-  //       urlToImage: this.state.article.articles[this.state.index].urlToImage,
-  //       createAt: firebase.firestore.FieldValue.serverTimestamp(),
-  //     });
-  // };
   const saveDataToFirebase = async () => {
     db.collection("users")
       .doc(auth.currentUser.email)
@@ -72,17 +50,6 @@ export default function SportsScreen({ navigation }) {
       });
   };
 
-  // const speakNews = () => {
-  //   const greeting =
-  //     this.state.article.articles[this.state.index].title +
-  //     this.state.article.articles[this.state.index].description;
-
-  //   const options = {
-  //     voice: "en-in-x-ene-local",
-  //     rate: 0.7,
-  //   };
-  //   Speech.speak(greeting, options);
-  // };
   const speakNews = () => {
     const greeting =
       article.articles[index].title + article.articles[index].description;
@@ -95,14 +62,10 @@ export default function SportsScreen({ navigation }) {
   };
 
   const getNews = async () => {
-    //change latitude and longitude
     var url = `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=${keyToApi}`;
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
-        // this.setState({
-        //   article: responseJson,
-        // });
         setArticle(responseJson);
       })
       .catch((error) => {
@@ -110,18 +73,11 @@ export default function SportsScreen({ navigation }) {
       });
   };
 
-  // componentDidMount = () => {
-  //   this.getNews();
-  // };
-
   useEffect(() => {
       getNews();
       grabApiKey();
   }, []);
 
-  // render() {
-
-  // if (this.state.article === "") {
   if (article === "") {
     return (
       <View
@@ -145,9 +101,6 @@ export default function SportsScreen({ navigation }) {
       <NativeBaseProvider>
         <Center _light={{ bg: "lightBlue.700" }}>
         <TouchableOpacity
-          style={{
-            // top: 30
-          }}
             onPress={() => {
               navigation.goBack();
             }}
@@ -179,9 +132,7 @@ export default function SportsScreen({ navigation }) {
                 </Pressable>
               </Box>
             )}
-            // onSnapToItem={(index) => this.setState({ index: index })}
             onSnapToItem={(index) => setIndex(index)}
-            loop={true}
           />
           <Pressable
             onPress={() => {

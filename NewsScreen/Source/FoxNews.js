@@ -32,7 +32,6 @@ export default function FoxNews({ navigation }) {
       .doc(auth.currentUser.email)
       .onSnapshot((doc) => {
         setKeyToApi(doc.data().apiKey);
-        // console.log(keyToApi);
       });
   };
 

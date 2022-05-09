@@ -32,7 +32,6 @@ export default function GoogleNews({ navigation }) {
       .doc(auth.currentUser.email)
       .onSnapshot((doc) => {
         setKeyToApi(doc.data().apiKey);
-        // console.log(keyToApi);
       });
   };
 
@@ -73,10 +72,8 @@ export default function GoogleNews({ navigation }) {
   };
 
   useEffect(() => {
-    // return () => {
     getNews();
     grabApiKey();
-    // };
   }, []);
 
   if (article === "") {
@@ -102,11 +99,6 @@ export default function GoogleNews({ navigation }) {
       <NativeBaseProvider>
         <Center _light={{ bg: "lightBlue.700" }}>
           <TouchableOpacity
-            style={
-              {
-                // top: 30,
-              }
-            }
             onPress={() => {
               navigation.goBack();
             }}

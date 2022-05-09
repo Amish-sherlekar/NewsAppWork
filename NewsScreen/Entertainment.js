@@ -23,15 +23,6 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function EntertainmentScreen({ navigation }) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     article: "",
-  //     index: 0,
-  //     keyToApi: "",
-  //   };
-  // }
-
   const [article, setArticle] = useState("");
   const [index, setIndex] = useState(0);
   const [keyToApi, setKeyToApi] = useState("");
@@ -69,7 +60,6 @@ export default function EntertainmentScreen({ navigation }) {
   };
 
   const getNews = async () => {
-    //change latitude and longitude
     var url = `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=${keyToApi}`;
     return fetch(url)
       .then((response) => response.json())
@@ -111,9 +101,6 @@ export default function EntertainmentScreen({ navigation }) {
       <NativeBaseProvider>
         <Center _light={{ bg: "lightBlue.700" }}>
           <TouchableOpacity
-            style={{
-              // top: 30,
-            }}
             onPress={() => {
               navigation.goBack();
             }}
@@ -147,7 +134,6 @@ export default function EntertainmentScreen({ navigation }) {
               </Box>
             )}
             onSnapToItem={(index) => setIndex(index)}
-            loop={true}
           />
           <Pressable
             onPress={() => {

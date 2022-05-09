@@ -22,7 +22,6 @@ import { db, auth, firebase } from "../../firebase/config";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-// export default class GoogleNews extends Component {
 export default function GoogleNews({ navigation }) {
   const [article, setArticle] = useState("");
   const [index, setIndex] = useState(0);
@@ -33,7 +32,6 @@ export default function GoogleNews({ navigation }) {
       .doc(auth.currentUser.email)
       .onSnapshot((doc) => {
         setKeyToApi(doc.data().apiKey);
-        // console.log(keyToApi);
       });
   };
 

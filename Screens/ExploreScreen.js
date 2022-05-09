@@ -28,26 +28,13 @@ import { auth, db, firebase } from "../firebase/config";
 const windowWidth = Dimensions.get("window").width;
 
 export default function ExploreScreen({ navigation }) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     article: "",
-  //     modalOpen: false,
-  //   };
-  // }
-
   const [article, setArticle] = useState("");
-  // const [modalOpen, setModalOpen] = useState(false);
 
   const getNews = async () => {
-    //change latitude and longitude
     var url = `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=a1cacd357bb146d2a946022b95be617b`;
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
-        // this.setState({
-        //   article: responseJson,
-        // });
         setArticle(responseJson);
       })
       .catch((error) => {
@@ -55,16 +42,10 @@ export default function ExploreScreen({ navigation }) {
       });
   };
 
-  // componentDidMount() {
-  //   this.getNews();
-  //   console.log(this.props.route.params);
-  // }
-
   useEffect(() => {
       getNews();
   }, []);
 
-  // render() {
   if (article === "") {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

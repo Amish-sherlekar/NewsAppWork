@@ -24,7 +24,6 @@ import { auth, db, firebase } from "../firebase/config";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-// export default class BusinessScrenn extends Component {
 export default function BusinessScrenn({ navigation }) {
   const [article, setArticle] = useState("");
   const [index, setIndex] = useState(0);

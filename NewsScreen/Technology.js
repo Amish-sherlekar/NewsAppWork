@@ -100,11 +100,6 @@ export default function TechnologyScreen({ navigation }) {
       <NativeBaseProvider>
         <Center _light={{ bg: "lightBlue.700" }}>
           <TouchableOpacity
-            style={
-              {
-                // top: 30,
-              }
-            }
             onPress={() => {
               navigation.goBack();
             }}
@@ -137,9 +132,7 @@ export default function TechnologyScreen({ navigation }) {
                 </Pressable>
               </Box>
             )}
-            // onSnapToItem={(index) => this.setState({ index: index })}
             onSnapToItem={(index) => setIndex(index)}
-            // loop={true}
           />
           <Pressable
             onPress={() => {
