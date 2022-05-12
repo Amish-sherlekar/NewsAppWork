@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {
   View,
   Text,
@@ -7,18 +7,19 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { NativeBaseProvider } from "native-base";
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NativeBaseProvider, Switch } from "native-base";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import tailwind from "tailwind-rn";
 import { Ionicons } from "@expo/vector-icons";
-import { auth, firebase } from "../firebase/config";
+import { auth, firebase, db } from "../firebase/config";
+import { EventRegister } from "react-native-event-listeners";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -29,6 +30,23 @@ const CustomDrawer = (props) => {
     props.navigation.goBack();
   };
 
+  const [darkMode, setDarkMode] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+
+  const getName = () => {
+    db.collection("users")
+      .doc(auth.currentUser.email)
+      .onSnapshot((doc) => {
+        setName(doc.data().username);
+        setEmail(doc.data().email);
+      });
+  };
+
+  React.useEffect(() => {
+    getName();
+  }, []);
+
   return (
     <NativeBaseProvider>
       <View style={{ flex: 1 }}>
@@ -36,46 +54,79 @@ const CustomDrawer = (props) => {
           {...props}
           contentContainerStyle={{ height: windowHeight - 10 }}
         >
-          <ImageBackground
-            source={require("../assets/images/bg2.jpg")}
-            style={{
-              height: windowHeight / 2.3,
-              width: windowWidth,
-              justifyContent: "center",
-              alignItems: "center",
-              bottom: 10
-            }}
-          >
-            <Feather
-              name="chevron-left"
-              size={30}
-              onPress={() => {
-                goBack();
+          <SafeAreaView>
+            <Image
+              source={require("../assets/images/userIcon.png")}
+              style={{
+                width: windowWidth / 3,
+                height: windowWidth / 3,
+                borderRadius: windowWidth / 3,
+                margin: 10,
+                left: 100,
               }}
-              color="#fff"
-              style={[styles.backIcon, tailwind("bg-indigo-400")]}
             />
-          </ImageBackground>
-          <View style={{ flex: 1, backgroundColor: "#fff" }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: darkMode ? "white" : "black",
+                textAlign: "center",
+              }}
+            >
+              Welcome {name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 13,
+                color: darkMode ? "white" : "black",
+                textAlign: "center",
+              }}
+            >
+              Welcome {email}
+            </Text>
+          </SafeAreaView>
+
+          <View style={{ marginTop: 15 }}>
             <DrawerItemList {...props} />
           </View>
         </DrawerContentScrollView>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={{
+              marginRight: 40,
+              marginVertical: 20,
+              fontFamily: "SigmarOne-Regular",
+              left: 30,
+              fontSize: 20,
+              color: "gray",
+              bottom: -8,
+            }}
+          >
+            Dark Mode
+          </Text>
+          <View style={{ top: 20 }}>
+            <Switch
+              value={darkMode}
+              onValueChange={(val) => {
+                setDarkMode(val);
+                EventRegister.emit("changeThemeEvent", val);
+              }}
+            />
+          </View>
+        </View>
         <TouchableOpacity
-          style={{
-            flexDirection: "row",
-          }}
+          style={[styles.signUpStyle, { flexDirection: "row" }]}
           onPress={() => {
             firebase.auth().signOut();
             console.log("logout");
           }}
         >
-          <Ionicons name="exit" size={45} color={"#000"} style={{ left: 20 }} />
+          <Ionicons name="exit" size={45} color={"gray"} style={{ left: 20 }} />
           <Text
             style={{
               fontFamily: "SigmarOne-Regular",
               left: 30,
               fontSize: 20,
-              color: "#000",
+              color: "gray",
               bottom: -8,
             }}
           >
@@ -97,11 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 5,
   },
-  signUpSyle: {
-    position: "absolute",
-    bottom: 0,
-    left: 20,
-    height: 60,
-    flexDirection: "row",
+  signUpStyle: {
+    paddingVertical: 30,
   },
 });

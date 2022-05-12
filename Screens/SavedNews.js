@@ -47,7 +47,7 @@ const SavedNews = () => {
       <View
         style={{
           // alignItems: "center",
-          width: 360,
+          width: "100%",
           height: "100%",
         }}
       >
@@ -55,7 +55,7 @@ const SavedNews = () => {
           source={{ uri: item.urlToImage }}
           style={{
             width: "100%",
-            height: 200,
+            height: "50%",
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
           }}

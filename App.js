@@ -31,5 +31,7 @@ export default function App() {
     return <AppLoading />;
   }
 
-  return <AppNavigator />;
+  return (
+    <AppNavigator />
+  )
 }

@@ -60,7 +60,6 @@ export default function NewsScreen() {
   };
 
   const getNews = async () => {
-
     try {
       var url = `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=${keyToApi}`;
       return fetch(url)
@@ -81,7 +80,7 @@ export default function NewsScreen() {
     grabApiKey();
   }, []);
 
-  if (article === "") {
+  if (article.title === "") {
     return (
       <View
         style={{
